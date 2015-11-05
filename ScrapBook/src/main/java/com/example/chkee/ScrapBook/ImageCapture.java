@@ -1,9 +1,7 @@
 package com.example.chkee.ScrapBook;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -31,13 +29,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ImageCapture extends Activity implements ImageViewFragment.OnFragmentInteractionListener, SurfaceHolder.Callback, Camera.ShutterCallback, Camera.PictureCallback, BaseFragment.OnFragmentInteractionListener {
+public class ImageCapture extends Activity implements SurfaceHolder.Callback, Camera.ShutterCallback, Camera.PictureCallback, BaseFragment.OnFragmentInteractionListener {
 
     Camera mCamera;
     SurfaceView mPreview;
@@ -76,8 +73,6 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
     }
 
 
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -108,51 +103,19 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
         mCamera.takePicture(this, null, null, this);
 
     }
-    FragmentManager fm1;
-    BaseFragment targetFragment1 = null;
 
 
     public void slideShow(View v) {
         //mCamera.takePicture(this, null, null, this);
         //Intent intent = new Intent(this, TopListActivity.class);
 
-        fm1 = this.getFragmentManager();
-        targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
+        FragmentManager fm = this.getFragmentManager();
+        BaseFragment targetFragment = null;
+        targetFragment = HorizontalPhotoGalleryFragment.newInstance(1);
 
-        fm1.beginTransaction()
-                .add(R.id.container, targetFragment1)
+        fm.beginTransaction()
+                .replace(R.id.container, targetFragment)
                 .commit();
-
-
-
-    }
-
-
-    public void inflatePicture(String imagePath){
-        FragmentManager fm = getFragmentManager();
-        ImageViewFragment targetFragment = null;
-        targetFragment = ImageViewFragment.newInstance("ss","abc");;
-
-        FragmentTransaction ft=fm.beginTransaction();
-                ft.replace(R.id.ImageFrame, targetFragment)
-                .commit();
-
-        if (targetFragment.isHidden()) {
-            ft.show(targetFragment);
-            Log.d("bhavya","Show");
-        }
-
-        if (targetFragment1.isHidden()) {
-            ft.show(targetFragment1);
-            Log.d("hidden","Show");
-        } else {
-            ft.hide(targetFragment1);
-            Log.d("Shown","Hide");
-        }
-
-
-
-
 
     }
 
@@ -182,14 +145,14 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
             List<String> providers = lm.getProviders(true);
 
             /* Loop over the array backwards, and if you get an accurate location, then break out the loop*/
-        if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return  ;
-        }
 
             for (int i = providers.size() - 1; i >= 0; i--) {
                 try {
+                    if ( Build.VERSION.SDK_INT >= 23 &&
+                            ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                            ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return  ;
+                    }
 
                     l = lm.getLastKnownLocation(providers.get(i));
                 } catch (Exception e) {

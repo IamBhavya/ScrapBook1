@@ -64,12 +64,6 @@ public class PhotoGalleryAsyncLoader extends AsyncTaskLoader<List<PhotoItem>> {
             onReleaseResources(oldPhotos);
         }
     }
-
-
-    public List<PhotoItem> getPhotoItems(){
-        return mPhotoListItems;
-    }
-
     /**
      * Handles a request to start the Loader.
      */
@@ -91,9 +85,6 @@ public class PhotoGalleryAsyncLoader extends AsyncTaskLoader<List<PhotoItem>> {
 // Attempt to cancel the current load task if possible.
         cancelLoad();
     }
-
-
-
     /**
      * Handles a request to cancel a load.
      */

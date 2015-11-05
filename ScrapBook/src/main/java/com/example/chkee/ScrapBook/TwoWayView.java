@@ -1,9 +1,7 @@
 package com.example.chkee.ScrapBook;
 
 import android.annotation.TargetApi;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
@@ -15,7 +13,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.KeyEventCompat;
@@ -81,7 +78,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     private static final int CHECK_POSITION_SEARCH_DISTANCE = 20;
     private static final float MAX_SCROLL_FACTOR = 0.33f;
     private static final int MIN_SCROLL_PREVIEW_PIXELS = 10;
-
     public static enum ChoiceMode {
         NONE,
         SINGLE,
@@ -165,7 +161,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     private ListItemAccessibilityDelegate mAccessibilityDelegate;
     private int mLastAccessibilityScrollEventFromIndex;
     private int mLastAccessibilityScrollEventToIndex;
-    private ImageCapture imgCapture;
+
 
 
 
@@ -224,19 +220,12 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
     public TwoWayView(Context context) {
         this(context, null);
-        imgCapture=(ImageCapture)context;
-
     }
     public TwoWayView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        imgCapture=(ImageCapture)context;
-
     }
     public TwoWayView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        imgCapture=(ImageCapture)context;
-
         mNeedSync = false;
         mVelocityTracker = null;
         mLayoutMode = LAYOUT_NORMAL;
@@ -307,9 +296,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
 
 
     public void setOrientation(Orientation orientation) {
-
-        Log.d("newLog","setOrientation");
-
         final boolean isVertical = (orientation.compareTo(Orientation.VERTICAL) == 0);
         if (mIsVertical == isVertical) {
             return;
@@ -321,8 +307,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
         requestLayout();
     }
     public Orientation getOrientation() {
-        Log.d("newLog", "getOrientation");
-
         return (mIsVertical ? Orientation.VERTICAL : Orientation.HORIZONTAL);
     }
     public void setItemMargin(int itemMargin) {
@@ -342,8 +326,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
      * @param itemsCanFocus true if items can get focus, false otherwise
      */
     public void setItemsCanFocus(boolean itemsCanFocus) {
-
-        Log.d("newLog","setItemCanFocus");
         mItemsCanFocus = itemsCanFocus;
         if (!itemsCanFocus) {
             setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
@@ -354,7 +336,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
      * items.
      */
     public boolean getItemsCanFocus() {
-        Log.d("newLog", "getItemCanFocus");
         return mItemsCanFocus;
     }
     /**
@@ -363,7 +344,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
      * @param l the scroll mListener
      */
     public void setOnScrollListener(OnScrollListener l) {
-        Log.d("newLog","setOnScrollListener");
         mOnScrollListener = l;
         invokeOnItemScrollListener();
     }
@@ -423,7 +403,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
      */
     @Override
     public long getSelectedItemId() {
-        Log.d("bhavya","getSelectedItem");
         return mNextSelectedRowId;
     }
 
@@ -432,7 +411,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
 
     public boolean isItemChecked(int position) {
-        Log.d("newLog","isItemChecked");
         if (mChoiceMode.compareTo(ChoiceMode.NONE) == 0 && mCheckStates != null) {
             return mCheckStates.get(position);
         }
@@ -440,7 +418,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
 
     public int getCheckedItemPosition() {
-        Log.d("newLog","getItemCheckedPosition");
         if (mChoiceMode.compareTo(ChoiceMode.SINGLE) == 0 &&
                 mCheckStates != null && mCheckStates.size() == 1) {
             return mCheckStates.keyAt(0);
@@ -472,7 +449,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void setItemChecked(int position, boolean value) {
-        Log.d("newLog","setItemChecked");
         if (mChoiceMode.compareTo(ChoiceMode.NONE) == 0) {
             return;
         }
@@ -527,7 +503,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void clearChoices() {
-        Log.d("newLog","clearChoices");
         if (mCheckStates != null) {
             mCheckStates.clear();
         }
@@ -537,12 +512,10 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
         mCheckedItemCount = 0;
     }
     public ChoiceMode getChoiceMode() {
-        Log.d("newLog","getChoiceMode");
         return mChoiceMode;
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void setChoiceMode(ChoiceMode choiceMode) {
-        Log.d("newLog","setChoiceMode");
         mChoiceMode = choiceMode;
         if (mChoiceMode.compareTo(ChoiceMode.NONE) != 0) {
             if (mCheckStates == null) {
@@ -612,12 +585,10 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
     @Override
     public int getCount() {
-        Log.d("newLog","getCount");
         return mItemCount;
     }
     @Override
     public int getPositionForView(View view) {
-        Log.d("newLog","getPositionForView");
         View child = view;
         try {
             View v;
@@ -640,7 +611,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
     @Override
     public void getFocusedRect(Rect r) {
-        Log.d("newLog","getFocusedRect");
         View view = getSelectedView();
         if (view != null && view.getParent() == this) {
 // The focused rectangle of the selected view offset into the
@@ -922,9 +892,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     @Override
     public boolean showContextMenuForChild(View originalView) {
         final int longPressPosition = getPositionForView(originalView);
-
-        Log.d("bhavya","showContextMenuForChild");
-
         if (longPressPosition >= 0) {
             final long longPressId = mAdapter.getItemId(longPressPosition);
             boolean handled = false;
@@ -1013,7 +980,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        Log.d("bhavya","onTouchEvent");
+        Log.d("bhavya","bhavya");
         if (!isEnabled()) {
 // A disabled view that is clickable still consumes the touch
 // events, it just doesn't respond to them.
@@ -1052,16 +1019,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
                     triggerCheckForTap();
                 }
                 mMotionPosition = motionPosition;
-                Log.d("bhavya",String.valueOf(mMotionPosition));
-                PhotoGalleryAsyncLoader a=new PhotoGalleryAsyncLoader(getContext());
-                List<PhotoItem> abc=a.getPhotoItems();
-               // Log.d("bhavya",fullIm)
-
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String imagePath = prefs.getString("imagepath"+String.valueOf(mMotionPosition), null);
-
-                imageAppear(imagePath);
-
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
@@ -1241,14 +1198,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
         }
         return true;
     }
-
-
-    public void imageAppear(String imagePath) {
-        imgCapture.inflatePicture(imagePath);
-    }
-
-
-
     @Override
     public void onTouchModeChanged(boolean isInTouchMode) {
         if (isInTouchMode) {
@@ -1555,8 +1504,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
         if (newSelectedPosition == INVALID_POSITION) {
             throw new IllegalArgumentException("newSelectedPosition needs to be valid");
         }
-
-        Log.d("newLog","handleNewSelectionChange");
 // Whether or not we are moving down/right or up/left, we want to preserve the
 // top/left of whatever view is at the start:
 // - moving down/right: the view that had selection
