@@ -32,6 +32,13 @@
         android:id="@+id/gallery_button"
         android:layout_below="@+id/editText"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="94dp" />
-
+        android:layout_marginTop="40dp" />
+    <Button
+        android:layout_width="365dp"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/logout_button"
+        android:layout_below="@+id/gallery_button"
+        android:layout_margin="40dp"/>
 </LinearLayout>

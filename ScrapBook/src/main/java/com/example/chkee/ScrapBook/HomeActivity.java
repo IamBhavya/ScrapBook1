@@ -13,7 +13,7 @@ import android.widget.Button;
 import com.example.chkee.ScrapBook.R;
 
 public class HomeActivity extends ActionBarActivity implements View.OnClickListener {
-    Button cameraButton,galleryButton;
+    Button cameraButton,galleryButton,logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,10 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         cameraButton = (Button)findViewById(R.id.image_button);
         galleryButton = (Button)findViewById(R.id.gallery_button);
+        logoutButton = (Button)findViewById(R.id.logout_button);
         cameraButton.setOnClickListener(this);
+        galleryButton.setOnClickListener(this);
+        logoutButton.setOnClickListener(this);
     }
 
     @Override
@@ -34,7 +37,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.gallery_button:
                 startActivity(new Intent(this, ImageCapture.class));
                 break;
-
+            case R.id.logout_button:
+                startActivity(new Intent(this,Login.class));
+                break;
         }
     }
 }
