@@ -11,8 +11,6 @@
     <string name="title_activity_top_list">TopListActivity</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="APPNAME">ScrapBook</string>
-    <string name="title_activity_show_pic">ShowPicActivity</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="SubText">Making Memories</string>
 
