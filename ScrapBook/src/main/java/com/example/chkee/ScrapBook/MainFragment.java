@@ -34,7 +34,7 @@ public class MainFragment extends Fragment {
         @Override
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
-            startActivity(new Intent(getContext(),ImageCapture.class));
+            startActivity(new Intent(getContext(),HomeActivity.class));
            // shareButton.setVisibility(View.VISIBLE);
            // shareButton.setOnClickListener(this);
         }
@@ -77,7 +77,7 @@ public class MainFragment extends Fragment {
        // shareButton.se
        // shareButton.setReadPermissions(Arrays.asList("publish_actions"));
        // shareButton.setFragment(this);
-        loginButton.setPublishPermissions(Arrays.asList("publish_actions"));;
+        loginButton.setPublishPermissions(Arrays.asList("publish_actions"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, mCallback);
     }

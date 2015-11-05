@@ -37,7 +37,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 String password = etPassword.getText().toString();
                 String pass = helper.searchPassword(userName);
                 if(pass.equals(password)) {
-                    startActivity(new Intent(this, ImageCapture.class));
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
                 else
                 {
