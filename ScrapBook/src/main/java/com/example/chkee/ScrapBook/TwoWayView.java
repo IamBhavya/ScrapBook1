@@ -1057,10 +1057,6 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
                 List<PhotoItem> abc=a.getPhotoItems();
                // Log.d("bhavya",fullIm)
 
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String imagePath = prefs.getString("imagepath"+String.valueOf(mMotionPosition), null);
-
-                imageAppear(imagePath);
 
                 break;
             }
@@ -4370,6 +4366,9 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
         }
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+
+
+
     @Override
     public boolean performItemClick(View view, int position, long id) {
         boolean checkedStateChanged = false;
@@ -5065,9 +5064,14 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
         }
     }
     private class PerformClick extends WindowRunnnable implements Runnable {
+
+
+
         int mClickMotionPosition;
         @Override
         public void run() {
+
+        Log.d("longpress","PerformClick");
             if (mDataChanged) {
                 return;
             }
@@ -5079,6 +5083,12 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
                 final View child = getChildAt(motionPosition - mFirstPosition);
                 if (child != null) {
                     performItemClick(child, motionPosition, adapter.getItemId(motionPosition));
+
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    String imagePath = prefs.getString("imagepath"+String.valueOf(mMotionPosition), null);
+
+                    imageAppear(imagePath);
+
                 }
             }
         }
@@ -5086,6 +5096,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     private final class CheckForTap implements Runnable {
         @Override
         public void run() {
+            Log.d("longpress","checkfortap1");
             if (mTouchMode != TOUCH_MODE_DOWN) {
                 return;
             }
@@ -5127,6 +5138,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     private class CheckForLongPress extends WindowRunnnable implements Runnable {
         @Override
         public void run() {
+            Log.d("longpress","CheckForLongPress");
             final int motionPosition = mMotionPosition;
             final View child = getChildAt(motionPosition - mFirstPosition);
             if (child != null) {
@@ -5147,6 +5159,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
     private class CheckForKeyLongPress extends WindowRunnnable implements Runnable {
         public void run() {
+            Log.d("longpress","checkForLongKeyPress");
             if (!isPressed() || mSelectedPosition < 0) {
                 return;
             }
