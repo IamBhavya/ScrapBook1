@@ -64,7 +64,9 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name="com.example.chkee.appfront.ShowPicActivity"
+            android:label="@string/title_activity_show_pic" >
         </activity>
     </application>
 

@@ -1,11 +1,13 @@
 package com.example.chkee.ScrapBook;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 
 import java.io.File;
@@ -76,6 +78,8 @@ public class PhotoGalleryImageProvider {
 //        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
         File f1;
+        SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor edit=shre.edit();
         for(int j=0;j<directories.length;j++) {
             File filesInternal[]=directories[j].listFiles();
 
@@ -94,7 +98,12 @@ public class PhotoGalleryImageProvider {
 //            out.close();
                 //Uri thumbnailUri = Uri.parse(String.valueOf(filelist[i]));
                 Uri thumbnailUri = Uri.parse(filesInternal[i].toString());
-                Uri fullImageUri = Uri.parse("bhavya");//Putting Dummy//String.valueOf(filelist[i]));
+                //filesInternal[i].toString().replace("thumbnail/","");
+                Uri fullImageUri = Uri.parse(filesInternal[i].toString().replace("thumbnails/",""));//Putting Dummy//String.valueOf(filelist[i]));
+
+                edit.putString("imagepath"+String.valueOf(i),String.valueOf(fullImageUri));
+                edit.commit();
+
 // Create the list item.
                 PhotoItem newItem = new PhotoItem(thumbnailUri, fullImageUri);
                 result.add(newItem);
