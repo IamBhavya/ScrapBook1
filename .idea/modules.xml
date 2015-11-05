@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AppFront.iml" filepath="$PROJECT_DIR$/AppFront.iml" />
       <module fileurl="file://$PROJECT_DIR$/ScrapBook/ScrapBook.iml" filepath="$PROJECT_DIR$/ScrapBook/ScrapBook.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ScrapBookProject.iml" filepath="$PROJECT_DIR$/ScrapBookProject.iml" />
     </modules>
   </component>
 </project>
