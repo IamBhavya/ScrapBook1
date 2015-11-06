@@ -7,15 +7,11 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
-<LinearLayout
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/ImageFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
 
     <LinearLayout
         android:background="#A001"

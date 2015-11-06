@@ -1,14 +1,19 @@
 package com.example.chkee.ScrapBook;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.chkee.ScrapBook.R;
+
+import java.io.FileNotFoundException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,14 +45,12 @@ public class ImageViewFragment extends BaseFragment  {
     public static ImageViewFragment newInstance(String param1, String param2) {
 
 
+
         ImageViewFragment fragment = new ImageViewFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
-
-
-
 
         return fragment;
     }
@@ -59,6 +62,8 @@ public class ImageViewFragment extends BaseFragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -70,7 +75,20 @@ public class ImageViewFragment extends BaseFragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_image_view, container, false);
-        v.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+        //v.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+
+        Bitmap bitmap = null;
+        try {
+            //bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse("file:///sdcard/10411747_951578114855383_3734666974531048536_n.jpg")));
+            bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse("file://" + mParam1)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ImageView img;
+        img = (ImageView)v.findViewById(R.id.image);
+        img.setImageBitmap(bitmap);
+
         return v;
     }
 
@@ -97,8 +115,6 @@ public class ImageViewFragment extends BaseFragment  {
         super.onDetach();
         mListener = null;
     }
-
-
 
     /**
      * This interface must be implemented by activities that contain this

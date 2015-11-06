@@ -46,6 +46,8 @@ import android.widget.AdapterView;
 import android.widget.Checkable;
 import android.widget.ListAdapter;
 import android.widget.Scroller;
+
+import java.io.FileNotFoundException;
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -1239,7 +1241,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
 
 
-    public void imageAppear(String imagePath) {
+    public void imageAppear(String imagePath) throws FileNotFoundException {
         imgCapture.inflatePicture(imagePath);
     }
 
@@ -5087,7 +5089,11 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                     String imagePath = prefs.getString("imagepath"+String.valueOf(mMotionPosition), null);
 
-                    imageAppear(imagePath);
+                    try {
+                        imageAppear(imagePath);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             }

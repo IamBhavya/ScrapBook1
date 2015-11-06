@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 //import com.google.android.gms.maps.model.LatLng;
 
@@ -128,19 +130,30 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
     }
 
 
-    public void inflatePicture(String imagePath){
+    public void inflatePicture(String imagePath) throws FileNotFoundException {
+
+
+        //BitmapFactory.decodePath(imagePath);
+
+//        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
+//        byte[] b = byteArrayBitmapStream.toByteArray();
         FragmentManager fm = getFragmentManager();
         ImageViewFragment targetFragment = null;
-        targetFragment = ImageViewFragment.newInstance("ss","abc");;
+        targetFragment = ImageViewFragment.newInstance(imagePath,"abc");
+
+
 
         FragmentTransaction ft=fm.beginTransaction();
                 ft.replace(R.id.ImageFrame, targetFragment)
                 .commit();
 
+
         if (targetFragment.isHidden()) {
             ft.show(targetFragment);
-            Log.d("bhavya","Show");
+            Log.d("hidden", "Show");
         }
+
 
         if (targetFragment1.isHidden()) {
             ft.show(targetFragment1);
@@ -236,8 +249,8 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
 
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-            String fileName=currentDateTimeString+System.currentTimeMillis();
-
+            //String fileName=(currentDateTimeString+System.currentTimeMillis()).replaceAll("\\s+","");
+            String fileName=java.util.UUID.randomUUID().toString();
             File file = new File(new File(Environment.getExternalStorageDirectory().toString()+"/ScrapBook/"+addresses.get(0).getLocality()+"/thumbnails"), fileName+".PNG");
             FileOutputStream out = new FileOutputStream(file);
             out.write(blob.toByteArray());
