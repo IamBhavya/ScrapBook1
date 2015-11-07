@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Calendar;
+
 public class Register extends ActionBarActivity implements View.OnClickListener {
 
     Button bRegister;
@@ -23,7 +25,7 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
                 c.setUserName(userName.getText().toString());
                 c.setPassword(password.getText().toString());
                 helper.insertContact(c);
-                startActivity(new Intent(this,Login.class));
+                startActivity(new Intent(getApplicationContext(),Login.class));
                 break;
         }
 

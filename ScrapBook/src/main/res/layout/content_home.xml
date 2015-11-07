@@ -49,10 +49,20 @@
     <Button
         android:layout_width="208dp"
         android:layout_height="wrap_content"
+        android:text="Schedule Timer"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/schedule_timer"
+        android:layout_below="@+id/gallery_button"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#f0e54c"
+        android:textColor="#7338bc"/>
+    <Button
+        android:layout_width="208dp"
+        android:layout_height="wrap_content"
         android:text="Logout"
         android:layout_gravity="center_horizontal"
         android:id="@+id/logout_button"
-        android:layout_below="@+id/gallery_button"
+        android:layout_below="@+id/schedule_timer"
         android:layout_margin="40dp"
         android:backgroundTint="#f0e54c"
         android:textColor="#7338bc"/>

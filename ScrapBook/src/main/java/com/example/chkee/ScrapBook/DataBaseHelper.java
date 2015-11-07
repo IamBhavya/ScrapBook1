@@ -35,7 +35,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "select * from contacts";
         Cursor cursor=db.rawQuery(query,null);
         int count=cursor.getCount();
-
         values.put(COLUMN_ID,count);
         values.put(COLUMN_NAME,c.getName());
         values.put(COLUMN_USERNAME,c.getUserName());

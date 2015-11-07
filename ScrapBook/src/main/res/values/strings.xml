@@ -13,6 +13,9 @@
     <string name="APPNAME">ScrapBook</string>
     <string name="hello_world">Hello world!</string>
     <string name="SubText">Making Memories</string>
+    <string name="title_activity_sharing">SharingActivity</string>
+    <string name="title_activity_sharing_actvity">SharingActvity</string>
+    <string name="Upload">upload</string>
 
 </resources>
 
