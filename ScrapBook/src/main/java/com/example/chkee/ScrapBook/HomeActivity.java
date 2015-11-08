@@ -50,7 +50,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(new Intent(this, ImageCapture.class));
                 break;
             case R.id.gallery_button:
-                startActivity(new Intent(this, ImageCapture.class));
+                startActivity(new Intent(this, AddNotes.class));
                 break;
             case R.id.logout_button:
                 startActivity(new Intent(this,Login.class));

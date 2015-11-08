@@ -1,14 +1,14 @@
 package com.example.chkee.ScrapBook;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,10 +21,10 @@ import android.os.Environment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 //import com.google.android.gms.maps.model.LatLng;
 
@@ -33,13 +33,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ImageCapture extends Activity implements ImageViewFragment.OnFragmentInteractionListener, SurfaceHolder.Callback, Camera.ShutterCallback, Camera.PictureCallback, BaseFragment.OnFragmentInteractionListener {
+public class ImageCapture extends Activity implements NotesFragment.OnFragmentInteractionListener, ImageViewFragment.OnFragmentInteractionListener, SurfaceHolder.Callback, Camera.ShutterCallback, Camera.PictureCallback, BaseFragment.OnFragmentInteractionListener {
 
     Camera mCamera;
     SurfaceView mPreview;
@@ -52,15 +51,86 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture);
 
-
         mPreview = (SurfaceView) findViewById(R.id.preview);
         mPreview.getHolder().addCallback(this);
         mPreview.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        mCamera = Camera.open();
+
+        mCamera = Camera.open(getCameraId());
+
+
+        Camera.Parameters params=mCamera.getParameters();
+        List<Camera.Size> sizes = params.getSupportedPictureSizes();
+        Camera.Size size = sizes.get(0);
+        for(int i=0;i<sizes.size();i++)
+        {
+            if(sizes.get(i).width > size.width)
+                size = sizes.get(i);
+        }
+        params.setPictureSize(size.width, size.height);
+        params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+        params.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
+        params.setExposureCompensation(0);
+        params.setPictureFormat(ImageFormat.JPEG);
+        params.setJpegQuality(100);
+        params.setRotation(90);
+//        params.setPreviewSize(size.width, size.height);
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        Camera.getCameraInfo(getCameraId(), cameraInfo);
+        setCameraDisplayOrientation(this, getCameraId(), mCamera);
+
+        mCamera.setParameters(params);
+
 
         Log.d(TAG, "onCreate()");
     }
+
+    public static void setCameraDisplayOrientation(Activity activity,
+                                                   int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info =
+                new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);
+        int rotation = activity.getWindowManager().getDefaultDisplay()
+                .getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);
+    }
+
+
+    private int getCameraId() {
+        int cameraId = -1;
+        // Search for the front facing camera
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                // Log.d(DEBUG_TAG, "Camera found");
+                cameraId = i;
+                break;
+            }
+        }
+        return cameraId;
+    }
+
+
+
 
     @Override
     public void onPause() {
@@ -107,67 +177,80 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
     }
 
     public void onSnapClick(View v) {
+
+
         mCamera.takePicture(this, null, null, this);
 
     }
-    FragmentManager fm1;
-    BaseFragment targetFragment1 = null;
+//    FragmentManager fm1;
+//    BaseFragment targetFragment1 = null;
 
 
-    public void slideShow(View v) {
-        //mCamera.takePicture(this, null, null, this);
-        //Intent intent = new Intent(this, TopListActivity.class);
-
-        fm1 = this.getFragmentManager();
-        targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
-
-        fm1.beginTransaction()
-                .add(R.id.container, targetFragment1)
-                .commit();
-
-
-
-    }
-
-
-    public void inflatePicture(String imagePath) throws FileNotFoundException {
+//    public void slideShow(View v) {
+//        //mCamera.takePicture(this, null, null, this);
+//        //Intent intent = new Intent(this, TopListActivity.class);
+//        startActivity(new Intent(this, AddNotes.class));   /////change
+//
+////        fm1 = this.getFragmentManager();
+////        targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
+////
+////        fm1.beginTransaction()
+////                .add(R.id.container, targetFragment1)
+////                .commit();
+//
+//
+//
+//    }
 
 
-        //BitmapFactory.decodePath(imagePath);
-
-//        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
-//        byte[] b = byteArrayBitmapStream.toByteArray();
-        FragmentManager fm = getFragmentManager();
-        ImageViewFragment targetFragment = null;
-        targetFragment = ImageViewFragment.newInstance(imagePath,"abc");
-
-
-
-        FragmentTransaction ft=fm.beginTransaction();
-                ft.replace(R.id.ImageFrame, targetFragment)
-                .commit();
-
-
-        if (targetFragment.isHidden()) {
-            ft.show(targetFragment);
-            Log.d("hidden", "Show");
-        }
-
-
-        if (targetFragment1.isHidden()) {
-            ft.show(targetFragment1);
-            Log.d("hidden","Show");
-        } else {
-            ft.hide(targetFragment1);
-            Log.d("Shown","Hide");
-        }
-
-
-
-
-
-    }
+//    public void inflatePicture(String imagePath) throws FileNotFoundException {
+//
+//
+//        //BitmapFactory.decodePath(imagePath);
+//
+////        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+////        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
+////        byte[] b = byteArrayBitmapStream.toByteArray();
+//        FragmentManager fm = getFragmentManager();
+//        ImageViewFragment targetFragment = null;
+//        targetFragment = ImageViewFragment.newInstance(imagePath,"abc");
+//
+//
+//
+//        FragmentTransaction ft=fm.beginTransaction();
+//                ft.replace(R.id.ImageFrame, targetFragment)
+//                .commit();
+//
+//        fm = getFragmentManager();
+//        NotesFragment targetFragment2 = null;
+//        targetFragment2 = NotesFragment.newInstance(imagePath,"abc");
+//
+//
+//
+//        FragmentTransaction ft1=fm.beginTransaction();
+//        ft1.replace(R.id.Notes, targetFragment2)
+//                .commit();
+//
+//
+//        if (targetFragment.isHidden()) {
+//            ft.show(targetFragment);
+//            Log.d("hidden", "Show");
+//        }
+//
+//
+//        if (targetFragment1.isHidden()) {
+//            ft.show(targetFragment1);
+//            Log.d("hidden","Show");
+//        } else {
+//            ft.hide(targetFragment1);
+//            Log.d("Shown","Hide");
+//        }
+//
+//
+//
+//
+//
+//    }
 
 
     @Override
@@ -245,7 +328,7 @@ public class ImageCapture extends Activity implements ImageViewFragment.OnFragme
             Bitmap original = BitmapFactory.decodeByteArray(data, 0, data.length);
             Bitmap resized = Bitmap.createScaledBitmap(original, THUMBSIZE, THUMBSIZE, true);
             ByteArrayOutputStream blob = new ByteArrayOutputStream();
-            resized.compress(Bitmap.CompressFormat.PNG, 100, blob);
+            resized.compress(Bitmap.CompressFormat.JPEG, 100, blob);
 
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 

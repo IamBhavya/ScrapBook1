@@ -167,7 +167,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     private ListItemAccessibilityDelegate mAccessibilityDelegate;
     private int mLastAccessibilityScrollEventFromIndex;
     private int mLastAccessibilityScrollEventToIndex;
-    private ImageCapture imgCapture;
+    private AddNotes imgCapture;
 
 
 
@@ -226,18 +226,18 @@ public class TwoWayView extends AdapterView<ListAdapter> implements ViewTreeObse
     }
     public TwoWayView(Context context) {
         this(context, null);
-        imgCapture=(ImageCapture)context;
+        imgCapture=(AddNotes)context;
 
     }
     public TwoWayView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        imgCapture=(ImageCapture)context;
+        imgCapture=(AddNotes)context;
 
     }
     public TwoWayView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        imgCapture=(ImageCapture)context;
+        imgCapture=(AddNotes)context;
 
         mNeedSync = false;
         mVelocityTracker = null;
