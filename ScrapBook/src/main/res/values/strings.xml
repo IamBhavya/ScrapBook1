@@ -19,6 +19,8 @@
     <string name="title_activity_sharing_actvity">SharingActvity</string>
     <string name="Upload">upload</string>
     <string name="title_activity_add_notes">AddNotes</string>
+    <string name="title_activity_date_picker">DatePicker</string>
+    <string name="title_activity_date">DateActivity</string>
 
 
 </resources>

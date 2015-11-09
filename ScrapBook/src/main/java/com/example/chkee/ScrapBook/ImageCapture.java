@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Environment;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Surface;
@@ -267,6 +269,11 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
     public void onPictureTaken(byte[] data, Camera camera) {
         //Here, we chose internal storage
 
+        SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor edit=shre.edit();
+
+
+
         double[] MyLoc = new double[2];
 
         double[] gps = new double[2];
@@ -295,6 +302,7 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
             if (l != null) {
                 gps[0] = l.getLatitude();
                 gps[1] = l.getLongitude();
+
             }
 
         //LatLng abc=new LatLng(gps[0],gps[1]);
@@ -306,6 +314,10 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
             Geocoder gcd = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = gcd.getFromLocation(gps[0], gps[1], 1);
             String s=addresses.get(0).getLocality();
+
+            edit.putString(s,String.valueOf(gps[0]+","+gps[1]));
+            edit.commit();
+
             Toast toast = Toast.makeText(this, addresses.get(0).getLocality(), Toast.LENGTH_SHORT);
             toast.show();
 

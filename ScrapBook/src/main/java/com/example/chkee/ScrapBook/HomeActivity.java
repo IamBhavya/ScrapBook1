@@ -22,26 +22,23 @@ import java.util.Timer;
 
 
 public class HomeActivity extends ActionBarActivity implements View.OnClickListener {
-    Button cameraButton,galleryButton,logoutButton,timerButton;
-    private ScheduleClient scheduleClient;
+    Button cameraButton,logoutButton,galleryButton;
+    Button timerButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        scheduleClient = new ScheduleClient(this);
-        scheduleClient.doBindService();
-        cameraButton = (Button)findViewById(R.id.image_button);
-        galleryButton = (Button)findViewById(R.id.gallery_button);
-        logoutButton = (Button)findViewById(R.id.logout_button);
-        timerButton=(Button)findViewById(R.id.schedule_timer);
+        cameraButton = (Button) findViewById(R.id.image_button);
+        galleryButton = (Button) findViewById(R.id.gallery_button);
+        logoutButton = (Button) findViewById(R.id.logout_button);
+        timerButton = (Button) findViewById(R.id.schedule_timer);
         timerButton.setOnClickListener(this);
         cameraButton.setOnClickListener(this);
         galleryButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         switch(v.getId())
@@ -61,24 +58,17 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 // if no ids were returned, something is wrong. get out.
               //  if (ids.length == 0)
                 //    System.exit(0);
-
+                startActivity(new Intent(this,DateActivity.class));
                 // begin output
              //   System.out.println("Current Time");
-                Calendar c= Calendar.getInstance();
-                c.setTimeInMillis(System.currentTimeMillis());
+              //  Calendar c= Calendar.getInstance();
+                //c.setTimeInMillis(System.currentTimeMillis());
                 // Ask our service to set an alarm for that date, this activity talks to the client that talks to the service
-                scheduleClient.setAlarmForNotification(c);
-                Toast.makeText(this, "Notification set for: " + c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH)+1) + "/" + c.get(Calendar.YEAR),Toast.LENGTH_LONG).show();
+                //scheduleClient.setAlarmForNotification(c);
+                //Toast.makeText(this, "Notification set for: " + (c.get(Calendar.MONTH)+1) + "/" + c.get(Calendar.DAY_OF_MONTH) +  "/" + c.get(Calendar.YEAR),Toast.LENGTH_LONG).show();
                 break;
         }
     }
-    @Override
-    protected void onStop() {
-        // When our activity is stopped ensure we also stop the connection to the service
-        // this stops us leaking our activity into the system *bad*
-        if(scheduleClient != null)
-            scheduleClient.doUnbindService();
-        super.onStop();
-    }
+
 
 }

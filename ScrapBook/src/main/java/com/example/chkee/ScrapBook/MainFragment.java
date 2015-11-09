@@ -35,9 +35,9 @@ public class MainFragment extends Fragment {
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             startActivity(new Intent(getContext(),HomeActivity.class));
-          //  LoginManager.getInstance().logInWithPublishPermissions(MainFragment, Arrays.asList("publish_actions"));
-           // shareButton.setVisibility(View.VISIBLE);
-           // shareButton.setOnClickListener(this);
+          // LoginManager.getInstance().logInWithPublishPermissions(MainFragment, Arrays.asList("publish_actions"));
+          // shareButton.setVisibility(View.VISIBLE);
+          // shareButton.setOnClickListener(this);
         }
 
         @Override
@@ -79,7 +79,8 @@ public class MainFragment extends Fragment {
        // shareButton.setReadPermissions(Arrays.asList("publish_actions"));
        // shareButton.setFragment(this);
       //  loginButton.setReadPermissions("user_photos");
-       loginButton.setPublishPermissions(Arrays.asList("publish_actions"));
+       // loginButton.setReadPermissions(Arrays.asList("user_checkins"));
+        loginButton.setPublishPermissions(Arrays.asList("publish_actions"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, mCallback);
     }

@@ -8,7 +8,8 @@
     android:padding="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_login" tools:context="com.example.chkee.ScrapBook.Login"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#94ace5">
 
     <TextView
         android:layout_width="wrap_content"
