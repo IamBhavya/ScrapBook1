@@ -36,12 +36,16 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
                 String userName = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
                 String pass = helper.searchPassword(userName);
-                if(pass.equals(password)) {
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                if(pass != null) {
+                    if (pass.equals(password)) {
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    } else {
+                        Toast temp = Toast.makeText(Login.this, "INVALID_CREDENTIALS", Toast.LENGTH_SHORT);
+                        temp.show();
+                    }
                 }
-                else
-                {
-                    Toast temp = Toast.makeText(Login.this,"INVALID_CREDENTIALS",Toast.LENGTH_SHORT);
+                else {
+                    Toast temp = Toast.makeText(Login.this, "NOT_REGISTERED", Toast.LENGTH_SHORT);
                     temp.show();
                 }
                 break;

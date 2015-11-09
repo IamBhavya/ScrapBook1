@@ -76,14 +76,16 @@ public class SharingActivity extends AppCompatActivity {
                         String s= inFile1.toString();
                         int c= String.valueOf(inFile1).lastIndexOf('/');
                         String imageName = s.substring(c) ;
-                        Bitmap image = BitmapFactory.decodeFile(String.valueOf(inFile1), options);
-                        SharePhoto photo = new SharePhoto.Builder().setBitmap(image).setCaption("Test").build();
-                        SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
-                        ShareApi.share(content, null);
-                        Photo p = new Photo();
-                        p.setImage_id(imageName);
-                        p.setValue(true);
-                        helper.insertPhotoInfo(p);
+                        if(helper.getPhotoInfo(imageName)== null) {
+                            Bitmap image = BitmapFactory.decodeFile(String.valueOf(inFile1), options);
+                            SharePhoto photo = new SharePhoto.Builder().setBitmap(image).setCaption("Test").build();
+                            SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
+                            ShareApi.share(content, null);
+                            Photo p = new Photo();
+                            p.setImage_id(imageName);
+                            p.setValue(true);
+                            helper.insertPhotoInfo(p);
+                        }
                     }
                 }
             }

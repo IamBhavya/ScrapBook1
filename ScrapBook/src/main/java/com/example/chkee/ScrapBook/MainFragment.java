@@ -1,7 +1,9 @@
 package com.example.chkee.ScrapBook;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +35,22 @@ public class MainFragment extends Fragment {
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
+
+            SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor edit=shre.edit();
+
+
             AccessToken accessToken = loginResult.getAccessToken();
+
+            edit.putString("accessToken",accessToken.toString());
+
+            edit.commit();
             startActivity(new Intent(getContext(),HomeActivity.class));
           // LoginManager.getInstance().logInWithPublishPermissions(MainFragment, Arrays.asList("publish_actions"));
           // shareButton.setVisibility(View.VISIBLE);
           // shareButton.setOnClickListener(this);
+
+
         }
 
         @Override
