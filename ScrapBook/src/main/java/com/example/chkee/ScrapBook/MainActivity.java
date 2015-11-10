@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
 import com.facebook.AccessToken;
 
@@ -19,5 +20,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this,HomeActivity.class));
         else
         startActivity(new Intent(this, Login.class));
+    }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keycode, event);
     }
 }
