@@ -1,7 +1,9 @@
 package com.example.chkee.ScrapBook;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
@@ -51,7 +53,11 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(new Intent(this, AddNotes.class));
                 break;
             case R.id.logout_button:
-                startActivity(new Intent(this,Login.class));
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor edit=prefs.edit();
+                edit.putString("accessToken",null);
+                edit.commit();
+                startActivity(new Intent(this, Login.class));
                 break;
             case R.id.schedule_timer:
                 // Create a new calendar set to the date chosen
