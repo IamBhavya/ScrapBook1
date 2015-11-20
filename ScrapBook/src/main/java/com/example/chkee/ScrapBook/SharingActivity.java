@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +27,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
@@ -53,22 +55,21 @@ public class SharingActivity extends AppCompatActivity {
     PhotoUploadHelper helper=new PhotoUploadHelper(this);
     private CallbackManager mCallbackManager;
     private LoginManager manager;
+    int arr[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sharing_actvity);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs != null && prefs.getString("accessToken",null) ==null){
 
-        }
-        else {
+        Bundle extras = getIntent().getExtras();
+        arr = extras.getIntArray("FilesToUpload");
             try {
                 uploadActivity();
-            } catch (JSONException e) {
+            }
+             catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
     }
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override
@@ -110,52 +111,35 @@ public class SharingActivity extends AppCompatActivity {
         options.inSampleSize = 3;
         Log.d("AccessToken","AccessToken "+ AccessToken.getCurrentAccessToken());
         File f = new File(Environment.getExternalStorageDirectory().toString()+"/ScrapBook");
+        Bundle extras = getIntent().getExtras();
+        arr = extras.getIntArray("FilesToUpload");
         if(f.exists()) {
             File[] files = f.listFiles();
             for (File inFile : files) {
                 int i = 0;
                 File k[] = files[i].listFiles();
-                for (File inFile1 : k) {
-                    if (!inFile1.isDirectory()) {
-                        String s = inFile1.toString();
-                        int c = String.valueOf(inFile1).lastIndexOf('/');
-                        String imageName = s.substring(c);
-                        if (helper.getPhotoInfo(imageName) == null) {
+                for (i = 0; i < k.length +1; i++) {
+                    int b= arr[i];
+                    Uri thumbnailUri = Uri.parse(k[b+1].toString());//replace i with arr[i];
+                    Uri fullImageUri = Uri.parse(k[b+1].toString().replace("thumbnails/", ""));//Putting Dummy//String.valueOf(filelist[i]));
+                    File inFile1=new File(String.valueOf(fullImageUri));
+                if (helper.getPhotoInfo(String.valueOf(fullImageUri)) == null) {
+
+                    //LoginClient.Request request= GraphRequest.newPostRequest(AccessToken.getCurrentAccessToken(),)
+
                             Bitmap image = BitmapFactory.decodeFile(String.valueOf(inFile1), options);
-                            SharePhoto photo = new SharePhoto.Builder().setBitmap(image).setCaption("Test").build();
+                            SharePhoto photo = new SharePhoto.Builder().setBitmap(image).setCaption("Columbus").build();
                             SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
                             ShareApi.share(content, null);
                             Photo p = new Photo();
-                            p.setImage_id(imageName);
+                            p.setImage_id(String.valueOf(fullImageUri));
                             p.setValue(true);
                             helper.insertPhotoInfo(p);
                         }
                     }
                 }
             }
-        }
-        JSONObject coordinates = new JSONObject();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Map<String,?> keys = prefs.getAll();
-
-        for(Map.Entry<String,?> entry : keys.entrySet()){
-            Log.d("map values",entry.getKey() + ": " +
-                    entry.getValue().toString());
-        }
-
-
-     //   String imagePath = prefs.getString("Columbus", null);
-       // String[] obj = imagePath.split(",");
-        //coordinates.put("latitude", Double.parseDouble(obj[0]));
-        //coordinates.put("longitude", Double.parseDouble(obj[1]));
-        //GraphRequest graphRequest = GraphRequest.newPostRequest(AccessToken.getCurrentAccessToken(), "me/posts",coordinates, new GraphRequest.Callback() {
-          //  @Override
-            //public void onCompleted(GraphResponse response) {
-
-//            }
-  //      });
-    //    graphRequest.executeAsync();
         Toast.makeText(this,"Upload Done",Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, HomeActivity.class));
     }

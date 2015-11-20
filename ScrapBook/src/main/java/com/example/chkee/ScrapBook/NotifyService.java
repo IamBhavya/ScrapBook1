@@ -94,7 +94,7 @@ public class NotifyService extends Service {
            // Send the notification to the system.
            //mNM.notify(NotId, notification);
 
-           Intent notificationIntent = new Intent(this, SharingActivity.class);
+           Intent notificationIntent = new Intent(this, NewLogin.class);
            PendingIntent contentIntent = PendingIntent.getActivity(this,
                    (int)System.currentTimeMillis(), notificationIntent,0);
            Notification.Builder builder = new Notification.Builder(this);

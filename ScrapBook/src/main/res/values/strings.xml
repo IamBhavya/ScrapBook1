@@ -21,6 +21,8 @@
     <string name="title_activity_add_notes">AddNotes</string>
     <string name="title_activity_date_picker">DatePicker</string>
     <string name="title_activity_date">DateActivity</string>
+    <string name="title_activity_new">NewActivity</string>
+    <string name="title_activity_new_login">NewLogin</string>
 
 
 </resources>

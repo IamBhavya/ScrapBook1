@@ -23,6 +23,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.support.v7.widget.ShareActionProvider;
 
 import com.example.chkee.ScrapBook.BaseFragment;
 import com.example.chkee.ScrapBook.HorizontalPhotoGalleryFragment;
@@ -39,6 +41,7 @@ import com.example.chkee.ScrapBook.R;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import android.support.v4.view.MenuItemCompat;
 
 
 
@@ -51,6 +54,7 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
     FragmentManager fm1 = null;
     BaseFragment targetFragment1 = null;
     private EditText noteContentText;
+    ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +194,33 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
                     .show();
 
         }
+
+
+
+
+
+        if(id==R.id.menu_item_share){
+            // Fetch and store ShareActionProvider
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+            // Return true to display menu
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("image/jpeg");
+            String s = "";
+            boolean flag = false;
+
+            //BitmapFactory.Options options = new BitmapFactory.Options();
+            //Bitmap original1 = BitmapFactory.decodeFile(imagePathFull, options);
+
+            //Bitmap icon = original1;
+
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///"+imagePathFull));
+
+            //sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, s);
+            startActivity(Intent.createChooser(sharingIntent, "Share").setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//        mShareActionProvider.setShareIntent(sharingIntent);
+
+        }
+
         return true;
 
     }

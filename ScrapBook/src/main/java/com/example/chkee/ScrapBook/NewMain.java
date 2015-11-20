@@ -48,7 +48,7 @@ public class NewMain extends Fragment {
             edit.commit();
           //  Toast.makeText(getContext(), "Uploading to Facebook", Toast.LENGTH_LONG).show();
             //Toast.makeText(getContext(), "Uploading Done", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getContext(),SharingActivity.class));
+            startActivity(new Intent(getContext(),NewActivity.class));
             // LoginManager.getInstance().logInWithPublishPermissions(MainFragment, Arrays.asList("publish_actions"));
             // shareButton.setVisibility(View.VISIBLE);
             // shareButton.setOnClickListener(this);

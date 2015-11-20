@@ -87,6 +87,16 @@
             android:label="@string/title_activity_date"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".NewActivity"
+            android:label="@string/title_activity_new"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".NewLogin"
+            android:label="@string/title_activity_new_login"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
