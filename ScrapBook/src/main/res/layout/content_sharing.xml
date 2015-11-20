@@ -10,26 +10,4 @@
     tools:showIn="@layout/activity_sharing"
     tools:context="com.example.chkee.appfront.SharingActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText3"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="46dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Upload"
-        android:id="@+id/uploadButton"
-        android:layout_marginTop="73dp"
-        android:layout_below="@+id/editText3"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="#1c1818"
-        android:textColor="#8c1021"
-        android:onClick="uploadActivity"/>
 </RelativeLayout>

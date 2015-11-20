@@ -3,6 +3,7 @@ package com.example.chkee.ScrapBook;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.chkee.ScrapBook.R;
 
+import java.io.File;
 import java.util.GregorianCalendar;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
@@ -49,8 +51,16 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.image_button:
                 startActivity(new Intent(this, ImageCapture.class));
                 break;
+
             case R.id.gallery_button:
-                startActivity(new Intent(this, AddNotes.class));
+                File f = new File(Environment.getExternalStorageDirectory().toString()+"/ScrapBook");
+                File[] files = f.listFiles();
+                if(files!=null) {
+                    startActivity(new Intent(this, AddNotes.class));
+                }
+                else{
+                    Toast.makeText(this,"No Images",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.logout_button:
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

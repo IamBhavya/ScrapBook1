@@ -36,12 +36,14 @@ public class DateActivity extends AppCompatActivity {
                                               int year, int monthOfYear, int dayOfMonth) {
 
                         Calendar c = Calendar.getInstance();
-                        c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                        c.set(Calendar.YEAR,year);
-                        c.set(Calendar.MONTH,monthOfYear);
-                        c.set(Calendar.HOUR_OF_DAY,12);
-                        c.set(Calendar.MINUTE,0);
-                        c.set(Calendar.SECOND,0);
+                      //  c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                        //c.set(Calendar.YEAR,year);
+                        //c.set(Calendar.MONTH,monthOfYear);
+                        //c.set(Calendar.HOUR_OF_DAY,12);
+                        //c.set(Calendar.MINUTE, 0);
+                        //c.set(Calendar.SECOND,0);
+                       // scheduleClient.setAlarmForNotification(c);
+                        c.setTimeInMillis(System.currentTimeMillis());
                         scheduleClient.setAlarmForNotification(c);
                         Toast.makeText(getApplicationContext(), "Notification set for: " + (monthOfYear + 1) + "/" + dayOfMonth + "/" + year, Toast.LENGTH_LONG).show();
                     }

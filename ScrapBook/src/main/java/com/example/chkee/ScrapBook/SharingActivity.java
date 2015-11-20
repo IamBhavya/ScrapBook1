@@ -24,10 +24,12 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
@@ -49,34 +51,76 @@ import static com.facebook.login.LoginManager.*;
 
 public class SharingActivity extends AppCompatActivity {
     PhotoUploadHelper helper=new PhotoUploadHelper(this);
-
+    private CallbackManager mCallbackManager;
+    private LoginManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sharing_actvity);
-        try {
-            uploadActivity(findViewById(R.id.uploadButton));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(prefs != null && prefs.getString("accessToken",null) ==null){
+
+        }
+        else {
+            try {
+                uploadActivity();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
-    public void uploadActivity(View view) throws JSONException {
+    private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+
+            SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor edit=shre.edit();
+
+
+            AccessToken accessToken = loginResult.getAccessToken();
+
+            edit.putString("accessToken", accessToken.toString());
+
+            edit.commit();
+            // LoginManager.getInstance().logInWithPublishPermissions(MainFragment, Arrays.asList("publish_actions"));
+            // shareButton.setVisibility(View.VISIBLE);
+            // shareButton.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+        }
+    };
+    public void uploadActivity() throws JSONException {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mCallbackManager = CallbackManager.Factory.create();
+        manager = LoginManager.getInstance();
+        manager.registerCallback(mCallbackManager,mCallback);
 
         Toast.makeText(this, "Uploading to Facebook", Toast.LENGTH_LONG).show();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 3;
+        Log.d("AccessToken","AccessToken "+ AccessToken.getCurrentAccessToken());
         File f = new File(Environment.getExternalStorageDirectory().toString()+"/ScrapBook");
-        File[] files = f.listFiles();
-        for (File inFile : files) {
-            int i=0;
+        if(f.exists()) {
+            File[] files = f.listFiles();
+            for (File inFile : files) {
+                int i = 0;
                 File k[] = files[i].listFiles();
                 for (File inFile1 : k) {
                     if (!inFile1.isDirectory()) {
-                        String s= inFile1.toString();
-                        int c= String.valueOf(inFile1).lastIndexOf('/');
-                        String imageName = s.substring(c) ;
-                        if(helper.getPhotoInfo(imageName)== null) {
+                        String s = inFile1.toString();
+                        int c = String.valueOf(inFile1).lastIndexOf('/');
+                        String imageName = s.substring(c);
+                        if (helper.getPhotoInfo(imageName) == null) {
                             Bitmap image = BitmapFactory.decodeFile(String.valueOf(inFile1), options);
                             SharePhoto photo = new SharePhoto.Builder().setBitmap(image).setCaption("Test").build();
                             SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
@@ -89,6 +133,7 @@ public class SharingActivity extends AppCompatActivity {
                     }
                 }
             }
+        }
         JSONObject coordinates = new JSONObject();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -112,6 +157,6 @@ public class SharingActivity extends AppCompatActivity {
   //      });
     //    graphRequest.executeAsync();
         Toast.makeText(this,"Upload Done",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(this, Login.class));
+        startActivity(new Intent(this, HomeActivity.class));
     }
  }
