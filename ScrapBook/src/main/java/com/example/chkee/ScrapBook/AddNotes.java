@@ -60,19 +60,19 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_notes);
-try {
-    fm1 = this.getFragmentManager();
-    targetFragment1 = null;
+        try {
+            fm1 = this.getFragmentManager();
+            targetFragment1 = null;
 
-    targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
+            targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
 
-    FragmentTransaction ft = fm1.beginTransaction();
-    ft.replace(R.id.container1, targetFragment1)
-            .commit();
-}catch(Exception e){
+            FragmentTransaction ft = fm1.beginTransaction();
+            ft.replace(R.id.container1, targetFragment1)
+                    .commit();
+        }catch(Exception e){
 
-}
-}
+        }
+    }
 
     public void inflatePicture(String imagePath) throws FileNotFoundException {
         try {

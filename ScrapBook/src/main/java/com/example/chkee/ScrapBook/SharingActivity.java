@@ -80,7 +80,7 @@ public class SharingActivity extends AppCompatActivity {
         catch (Exception e){
 
         }
-        }
+    }
 
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override

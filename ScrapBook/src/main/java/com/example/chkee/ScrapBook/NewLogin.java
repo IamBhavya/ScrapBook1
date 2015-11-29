@@ -33,8 +33,8 @@ public class NewLogin extends AppCompatActivity {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
                 if (prefs != null && prefs.getString("accessToken", null) != null) {
-                    boolean b = hasActiveInternetConnection(this);
 
+                    boolean b = hasActiveInternetConnection(this);
                     if (b == false) {
                         Toast.makeText(this, "Internet Not Available", Toast.LENGTH_SHORT).show();
                     } else {
@@ -47,24 +47,54 @@ public class NewLogin extends AppCompatActivity {
     }
 
     public boolean hasActiveInternetConnection(Context context) {
-     try{
-         if (isNetworkAvailable()) {
-             try {
-                 HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
-                 urlc.setRequestProperty("User-Agent", "Test");
-                 urlc.setRequestProperty("Connection", "close");
-                 urlc.setConnectTimeout(1500);
-                 urlc.connect();
-                 return (urlc.getResponseCode() == 200);
-             } catch (IOException e) {
-                 Log.e("bhavya", "Error checking internet connection", e);
-             }
-         } else {
-             Log.d("bhavya", "No network available!");
-         }
-     }catch(Exception e){
+        try {
+            if (isNetworkAvailable()) {
+                try {
+                    final HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
+                    urlc.setRequestProperty("User-Agent", "Test");
+                    urlc.setRequestProperty("Connection", "close");
+                    urlc.setConnectTimeout(1500);
+                    final boolean x[]=new boolean[2];
+                    Runnable t = new Runnable() {
+                        public void run() {
+                            try {
+                                urlc.connect();
+                                if (urlc.getResponseCode() == 200) {
+                                    x[0] = true;
+                                    x[1] = true;
+                                }
+                                else{
+                                    x[0] = false;
+                                    x[1] = true;
+                                }
 
-    }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    new Thread(t).start();
+                    while(true){
+                        if(x[1]==true){
+                            return(x[0]);
+                        }
+                        else
+                            continue;
+                    }
+
+
+                } catch (IOException e) {
+                    Log.e("bhavya", "Error checking internet connection", e);
+                }catch(Exception e){
+
+                }
+
+            } else {
+                Log.d("bhavya", "No network available!");
+            }
+        }catch(Exception e){
+
+        }
         return false;
     }
 

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -370,6 +371,10 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
     public void onPause() {
         super.onPause();
         mCamera.stopPreview();
+        mPreview.getHolder().removeCallback(this);
+        mCamera.setPreviewCallback(null);
+        mCamera.release();
+        mCamera = null;
 
         Log.d(TAG, "onPause()");
     }
@@ -377,19 +382,58 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCamera.release();
+        try{
+            if(mCamera!=null)
+                mCamera.release();
+        }catch(Exception e){
+
+        }
         Log.d(TAG, "Destroy");
     }
 
 
 
 
+
     @Override
     public void onResume() {
-        super.onResume();
-        mCamera.startPreview();
+        try {
+            super.onResume();
+            mPreview = (SurfaceView) findViewById(R.id.preview);
+            mPreview.getHolder().addCallback(this);
+            mPreview.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        Log.d(TAG, "onResume()");
+            Toast.makeText(this, "Loading Location", Toast.LENGTH_SHORT);
+            mCamera = Camera.open(getCameraId());
+
+            img = this;
+            Camera.Parameters params = mCamera.getParameters();
+            List<Camera.Size> sizes = params.getSupportedPictureSizes();
+            Camera.Size size = sizes.get(0);
+            for (int i = 0; i < sizes.size(); i++) {
+                if (sizes.get(i).width > size.width)
+                    size = sizes.get(i);
+            }
+            params.setPictureSize(size.width, size.height);
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+            params.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
+            params.setExposureCompensation(0);
+            params.setPictureFormat(ImageFormat.JPEG);
+            params.setJpegQuality(100);
+            params.setRotation(90);
+//        params.setPreviewSize(size.width, size.height);
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            Camera.getCameraInfo(getCameraId(), cameraInfo);
+            setCameraDisplayOrientation(this, getCameraId(), mCamera);
+
+            mCamera.setParameters(params);
+            mCamera.startPreview();
+        }catch(Exception e){
+
+        }
+
     }
 
     @Override
@@ -524,15 +568,32 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        try {
-            mCamera.setPreviewDisplay(mPreview.getHolder());
-        } catch (Exception e) {
-            e.printStackTrace();
+        try
+        {
+            if (mCamera != null)
+            {
+                mCamera.setPreviewDisplay(holder);
+            }
+        }
+        catch (IOException exception)
+        {
+            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
+        }catch(Exception e ){
+
         }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        try{
+            if (mCamera != null)
+            {
+                mCamera.stopPreview();
+            }
+        }catch(Exception e){
+
+        }
+
         Log.i("PREVIEW", "surfaceDestroyed");
     }
 
