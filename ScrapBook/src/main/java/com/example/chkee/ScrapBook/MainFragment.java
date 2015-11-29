@@ -1,14 +1,19 @@
 package com.example.chkee.ScrapBook;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -20,6 +25,9 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.share.model.SharePhotoContent;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,22 +43,24 @@ public class MainFragment extends Fragment {
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-
-            SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            SharedPreferences.Editor edit=shre.edit();
-
-
-            AccessToken accessToken = loginResult.getAccessToken();
-
-            edit.putString("accessToken",accessToken.toString());
-
-            edit.commit();
-            startActivity(new Intent(getContext(),HomeActivity.class));
-          // LoginManager.getInstance().logInWithPublishPermissions(MainFragment, Arrays.asList("publish_actions"));
-          // shareButton.setVisibility(View.VISIBLE);
-          // shareButton.setOnClickListener(this);
+try {
+    SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    SharedPreferences.Editor edit = shre.edit();
 
 
+    AccessToken accessToken = loginResult.getAccessToken();
+
+    edit.putString("accessToken", accessToken.toString());
+
+    edit.commit();
+    startActivity(new Intent(getContext(), HomeActivity.class));
+    // LoginManager.getInstance().logInWithPublishPermissions(MainFragment, Arrays.asList("publish_actions"));
+    // shareButton.setVisibility(View.VISIBLE);
+    // shareButton.setOnClickListener(this);
+
+}catch(Exception e){
+
+}
         }
 
         @Override
@@ -67,15 +77,17 @@ public class MainFragment extends Fragment {
     public MainFragment() {
     }
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+            mCallbackManager = CallbackManager.Factory.create();
+            //    List<String> permissionNeeds = Arrays.asList("publish_actions");
+            manager = LoginManager.getInstance();
+            manager.registerCallback(mCallbackManager, mCallback);
+        } catch (Exception e) {
 
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
-    //    List<String> permissionNeeds = Arrays.asList("publish_actions");
-        manager = LoginManager.getInstance();
-        manager.registerCallback(mCallbackManager,mCallback);
+        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,8 +113,51 @@ public class MainFragment extends Fragment {
     public void onActivityResult(int requestCode,int resultCode,Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+try {
+    boolean b = hasActiveInternetConnection(getActivity().getBaseContext());
 
+    if (b == false) {
+        Toast.makeText(getActivity().getBaseContext(), "Internet Not Available", Toast.LENGTH_SHORT).show();
+    } else {
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+}catch(Exception e){
+
+}
+    }
+
+    public boolean hasActiveInternetConnection(Context context) {
+        if (isNetworkAvailable()) {
+            try {
+                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
+                urlc.setRequestProperty("User-Agent", "Test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1500);
+                urlc.connect();
+                return (urlc.getResponseCode() == 200);
+            } catch (IOException e) {
+                Log.e("bhavya", "Error checking internet connection", e);
+            }catch(Exception e){
+
+            }
+
+        } else {
+            Log.d("bhavya", "No network available!");
+        }
+        return false;
+    }
+
+    private boolean isNetworkAvailable() {
+        try {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) getActivity().getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null;
+
+        } catch (Exception e) {
+
+        }
+        return false;
     }
 
 }

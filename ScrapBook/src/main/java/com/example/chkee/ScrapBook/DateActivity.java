@@ -1,17 +1,24 @@
 package com.example.chkee.ScrapBook;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.chkee.ScrapBook.R;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 
 public class DateActivity extends AppCompatActivity {
@@ -21,48 +28,90 @@ public class DateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date);
-        scheduleClient = new ScheduleClient(this);
-        scheduleClient.doBindService();
-        Calendar c = Calendar.getInstance();
-        timerButton = (DatePicker)findViewById(R.id.date_picker);
-        timerButton.init(
-                c.get(Calendar.YEAR),
-                c.get(Calendar.MONTH),
-                c.get(Calendar.DAY_OF_MONTH),
-                new DatePicker.OnDateChangedListener() {
 
-                    @Override
-                    public void onDateChanged(DatePicker view,
-                                              int year, int monthOfYear, int dayOfMonth) {
+        try{
 
-                        Calendar c = Calendar.getInstance();
-                      //  c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                        //c.set(Calendar.YEAR,year);
-                        //c.set(Calendar.MONTH,monthOfYear);
-                        //c.set(Calendar.HOUR_OF_DAY,12);
-                        //c.set(Calendar.MINUTE, 0);
-                        //c.set(Calendar.SECOND,0);
-                       // scheduleClient.setAlarmForNotification(c);
-                        c.setTimeInMillis(System.currentTimeMillis());
-                        scheduleClient.setAlarmForNotification(c);
-                        Toast.makeText(getApplicationContext(), "Notification set for: " + (monthOfYear + 1) + "/" + dayOfMonth + "/" + year, Toast.LENGTH_LONG).show();
-                    }
-                });
+              scheduleClient = new ScheduleClient(this);
 
+              scheduleClient.doBindService();
+              Calendar c = Calendar.getInstance();
+              timerButton = (DatePicker) findViewById(R.id.date_picker);
+              timerButton.init(
+                      c.get(Calendar.YEAR),
+                      c.get(Calendar.MONTH),
+                      c.get(Calendar.DAY_OF_MONTH),
+                      new DatePicker.OnDateChangedListener() {
+
+                          @Override
+                          public void onDateChanged(DatePicker view,
+                                                    int year, int monthOfYear, int dayOfMonth) {
+
+                              Calendar c = Calendar.getInstance();
+                              //  c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                              //c.set(Calendar.YEAR,year);
+                              //c.set(Calendar.MONTH,monthOfYear);
+                              //c.set(Calendar.HOUR_OF_DAY,12);
+                              //c.set(Calendar.MINUTE, 0);
+                              //c.set(Calendar.SECOND,0);
+                              // scheduleClient.setAlarmForNotification(c);
+                              c.setTimeInMillis(System.currentTimeMillis());
+                              scheduleClient.setAlarmForNotification(c);
+                              Toast.makeText(getApplicationContext(), "Notification set for: " + (monthOfYear + 1) + "/" + dayOfMonth + "/" + year, Toast.LENGTH_LONG).show();
+                          }
+                      });
+
+      }catch(Exception e){
+
+      }
     }
 
-    public void backPress(View view)
-    {
-        startActivity(new Intent(this,HomeActivity.class));
+    public boolean hasActiveInternetConnection(Context context) {
+        if (isNetworkAvailable()) {
+            try {
+                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
+                urlc.setRequestProperty("User-Agent", "Test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1500);
+                urlc.connect();
+                return (urlc.getResponseCode() == 200);
+            } catch (IOException e) {
+                Log.e("bhavya", "Error checking internet connection", e);
+            }
+        } else {
+            Log.d("bhavya", "No network available!");
+        }
+        return false;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
+
+
+    public void backPress(View view) {
+        try {
+            startActivity(new Intent(this, HomeActivity.class));
+
+        }catch(Exception e){
+
+        }
     }
 
     @Override
     protected void onStop() {
         // When our activity is stopped ensure we also stop the connection to the service
         // this stops us leaking our activity into the system *bad*
-       if(scheduleClient != null)
-            scheduleClient.doUnbindService();
-        super.onStop();
+        try {
+            if (scheduleClient != null)
+                scheduleClient.doUnbindService();
+
+            super.onStop();
+        }catch(Exception e){
+
+        }
     }
 
 }

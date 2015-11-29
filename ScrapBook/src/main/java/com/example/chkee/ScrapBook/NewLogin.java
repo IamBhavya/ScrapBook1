@@ -1,16 +1,25 @@
 package com.example.chkee.ScrapBook;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.chkee.ScrapBook.R;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class NewLogin extends AppCompatActivity {
 
@@ -18,10 +27,56 @@ public class NewLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_login);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs != null && prefs.getString("accessToken",null) !=null){
-            startActivity(new Intent(this,NewActivity.class));
+
+        try {
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+                if (prefs != null && prefs.getString("accessToken", null) != null) {
+                    boolean b = hasActiveInternetConnection(this);
+
+                    if (b == false) {
+                        Toast.makeText(this, "Internet Not Available", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(this, NewActivity.class));
+                    }
+            }
+        } catch (Exception e) {
+
         }
     }
 
+    public boolean hasActiveInternetConnection(Context context) {
+     try{
+         if (isNetworkAvailable()) {
+             try {
+                 HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
+                 urlc.setRequestProperty("User-Agent", "Test");
+                 urlc.setRequestProperty("Connection", "close");
+                 urlc.setConnectTimeout(1500);
+                 urlc.connect();
+                 return (urlc.getResponseCode() == 200);
+             } catch (IOException e) {
+                 Log.e("bhavya", "Error checking internet connection", e);
+             }
+         } else {
+             Log.d("bhavya", "No network available!");
+         }
+     }catch(Exception e){
+
+    }
+        return false;
+    }
+
+    private boolean isNetworkAvailable() {
+        try {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null;
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
 }

@@ -21,44 +21,58 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        etUserName = (EditText)findViewById(R.id.etUserName);
-        etPassword =(EditText)findViewById(R.id.etPassword);
-        registerLink = (TextView)findViewById(R.id.tvRegisterLink);
-        login = (Button)findViewById(R.id.bLogin);
-        login.setOnClickListener( this);
-        registerLink.setOnClickListener(this);
+    try {
+            etUserName = (EditText) findViewById(R.id.etUserName);
+
+            etPassword = (EditText) findViewById(R.id.etPassword);
+            registerLink = (TextView) findViewById(R.id.tvRegisterLink);
+            login = (Button) findViewById(R.id.bLogin);
+            login.setOnClickListener(this);
+            registerLink.setOnClickListener(this);
+        }catch(Exception e){
+
+        }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.bLogin:
-                String userName = etUserName.getText().toString();
-                String password = etPassword.getText().toString();
-                String pass = helper.searchPassword(userName);
-                if(pass != null) {
-                    if (pass.equals(password)) {
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        try {
+            switch (v.getId()) {
+                case R.id.bLogin:
+                    String userName = etUserName.getText().toString();
+                    String password = etPassword.getText().toString();
+                    String pass = helper.searchPassword(userName);
+                    if (pass != null) {
+                        if (pass.equals(password)) {
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        } else {
+                            Toast temp = Toast.makeText(Login.this, "INVALID_CREDENTIALS", Toast.LENGTH_SHORT);
+                            temp.show();
+                        }
                     } else {
-                        Toast temp = Toast.makeText(Login.this, "INVALID_CREDENTIALS", Toast.LENGTH_SHORT);
+                        Toast temp = Toast.makeText(Login.this, "NOT_REGISTERED", Toast.LENGTH_SHORT);
                         temp.show();
                     }
-                }
-                else {
-                    Toast temp = Toast.makeText(Login.this, "NOT_REGISTERED", Toast.LENGTH_SHORT);
-                    temp.show();
-                }
-                break;
-            case R.id.tvRegisterLink:
-                startActivity(new Intent(getApplicationContext(),Register.class));
-                break;
-        }
+                    break;
+                case R.id.tvRegisterLink:
+                    startActivity(new Intent(getApplicationContext(), Register.class));
+                    break;
+            }
 
+        } catch (Exception e) {
+
+
+        }
     }
     public boolean onKeyDown(int keycode, KeyEvent event) {
-        if (keycode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
+        try {
+            if (keycode == KeyEvent.KEYCODE_BACK) {
+                moveTaskToBack(true);
+            }
+
+
+        } catch (Exception e) {
+
         }
         return super.onKeyDown(keycode, event);
     }

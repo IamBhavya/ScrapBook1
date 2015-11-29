@@ -34,6 +34,8 @@ public class MyApplication extends Application {
 
         } catch (NoSuchAlgorithmException e) {
 
+        }catch(Exception e){
+
         }
 
     }

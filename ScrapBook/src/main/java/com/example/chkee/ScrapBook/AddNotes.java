@@ -60,60 +60,63 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_notes);
+try {
+    fm1 = this.getFragmentManager();
+    targetFragment1 = null;
 
-        fm1 = this.getFragmentManager();
-        targetFragment1 = null;
+    targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
 
-        targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
+    FragmentTransaction ft = fm1.beginTransaction();
+    ft.replace(R.id.container1, targetFragment1)
+            .commit();
+}catch(Exception e){
 
-        FragmentTransaction ft=fm1.beginTransaction();
-        ft.replace(R.id.container1, targetFragment1)
-                .commit();
-    }
+}
+}
 
     public void inflatePicture(String imagePath) throws FileNotFoundException {
-
-        imagePathFull=imagePath;
-        //BitmapFactory.decodePath(imagePath);
+        try {
+            imagePathFull = imagePath;
+            //BitmapFactory.decodePath(imagePath);
 
 //        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
 //        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
 //        byte[] b = byteArrayBitmapStream.toByteArray();
-        FragmentManager fm = getFragmentManager();
-        ImageViewFragment targetFragment = null;
-        targetFragment = ImageViewFragment.newInstance(imagePath,"abc");
+            FragmentManager fm = getFragmentManager();
+            ImageViewFragment targetFragment = null;
+            targetFragment = ImageViewFragment.newInstance(imagePath, "abc");
 
 
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.ImageFrame, targetFragment)
+                    .commit();
 
-        FragmentTransaction ft=fm.beginTransaction();
-        ft.replace(R.id.ImageFrame, targetFragment)
-                .commit();
-
-        fm = getFragmentManager();
-        NotesFragment targetFragment2 = null;
-        targetFragment2 = NotesFragment.newInstance(imagePath,"abc");
-
+            fm = getFragmentManager();
+            NotesFragment targetFragment2 = null;
+            targetFragment2 = NotesFragment.newInstance(imagePath, "abc");
 
 
-        FragmentTransaction ft1=fm.beginTransaction();
-        ft1.replace(R.id.Notes, targetFragment2)
-                .commit();
+            FragmentTransaction ft1 = fm.beginTransaction();
+            ft1.replace(R.id.Notes, targetFragment2)
+                    .commit();
 
 
-        if (targetFragment.isHidden()) {
-            ft.show(targetFragment);
-            Log.d("hidden", "Show");
+            if (targetFragment.isHidden()) {
+                ft.show(targetFragment);
+                Log.d("hidden", "Show");
+            }
+
+
+            if (targetFragment1.isHidden()) {
+                ft.show(targetFragment1);
+                Log.d("hidden", "Show");
+            } else {
+                ft.hide(targetFragment1);
+                Log.d("Shown", "Hide");
+            }
+        }catch(Exception e){
+
         }
-
-
-        if (targetFragment1.isHidden()) {
-            ft.show(targetFragment1);
-            Log.d("hidden","Show");
-        } else {
-            ft.hide(targetFragment1);
-            Log.d("Shown","Hide");
-        }
-
     }
 
 
@@ -130,76 +133,74 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-
+    try {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
-        if(id==R.id.action_save) {
+        if (id == R.id.action_save) {
 
-            noteContentText=(EditText)findViewById(R.id.note_content);
-            String s1=noteContentText.getText().toString();
+            noteContentText = (EditText) findViewById(R.id.note_content);
+            String s1 = noteContentText.getText().toString();
             Draw2d d = new Draw2d(this, s1, imagePathFull);
             Draw2d d1 = new Draw2d(this);
-            d1.s=d.s;
-            d1.imagePathF=d.imagePathF;
+            d1.s = d.s;
+            d1.imagePathF = d.imagePathF;
 
             d.invalidate();
             d1.invalidate();
             d.postInvalidate();
             setContentView(d);
 
-//            setContentView(R.layout.activity_add_notes);
-//
-//            fm1 = getFragmentManager();
-//            targetFragment1 = null;
-//
-//            targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
-//
-//            FragmentTransaction ft = fm1.beginTransaction();
-//            ft.replace(R.id.container1, targetFragment1)
-//                    .commit();
+    //            setContentView(R.layout.activity_add_notes);
+    //
+    //            fm1 = getFragmentManager();
+    //            targetFragment1 = null;
+    //
+    //            targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
+    //
+    //            FragmentTransaction ft = fm1.beginTransaction();
+    //            ft.replace(R.id.container1, targetFragment1)
+    //                    .commit();
 
-            AlertDialog.Builder ad=new AlertDialog.Builder(this);
-                    ad.setTitle("ImageSaved");
-                    ad.setMessage("Continue");
-                    ad.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+            AlertDialog.Builder ad = new AlertDialog.Builder(this);
+            ad.setTitle("ImageSaved");
+            ad.setMessage("Continue");
+            ad.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
 
 
-                            setContentView(R.layout.activity_add_notes);
+                    setContentView(R.layout.activity_add_notes);
 
-                            fm1 = getFragmentManager();
-                            targetFragment1 = null;
+                    fm1 = getFragmentManager();
+                    targetFragment1 = null;
 
-                            targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
+                    targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
 
-                            FragmentTransaction ft = fm1.beginTransaction();
-                            ft.replace(R.id.container1, targetFragment1)
-                                    .commit();
-                            // continue with delete
-                        }
-                    })
-//                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            setContentView(R.layout.activity_add_notes);
-//
-//                            // do nothing
-//                        }
-//                    })
+                    FragmentTransaction ft = fm1.beginTransaction();
+                    ft.replace(R.id.container1, targetFragment1)
+                            .commit();
+                    // continue with delete
+                }
+            })
+    //                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+    //                        public void onClick(DialogInterface dialog, int which) {
+    //                            setContentView(R.layout.activity_add_notes);
+    //
+    //                            // do nothing
+    //                        }
+    //                    })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
         }
 
 
-
-
-
-        if(id==R.id.menu_item_share){
+        if (id == R.id.menu_item_share) {
             // Fetch and store ShareActionProvider
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
             // Return true to display menu
@@ -213,14 +214,16 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
 
             //Bitmap icon = original1;
 
-            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///"+imagePathFull));
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///" + imagePathFull));
 
             //sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, s);
             startActivity(Intent.createChooser(sharingIntent, "Share").setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-//        mShareActionProvider.setShareIntent(sharingIntent);
+    //        mShareActionProvider.setShareIntent(sharingIntent);
+
+            }
+        }catch (Exception e){
 
         }
-
         return true;
 
     }
@@ -237,23 +240,33 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
         public Draw2d(Context context, String s1, String imagePath) {
 
             super(context);
-            imagePathF=imagePath;
-            s=s1;
-            setDrawingCacheEnabled(true);
-            setWillNotDraw(false);
+            try {
+                imagePathF = imagePath;
+                s = s1;
+                setDrawingCacheEnabled(true);
+                setWillNotDraw(false);
+            }catch(Exception e){
+
+            }
         }
 
         public Draw2d(Context context) {
 
             super(context);
+            try {
+                setWillNotDraw(false);
+                setDrawingCacheEnabled(true);
+            } catch (Exception e) {
 
-            setWillNotDraw(false);
-            setDrawingCacheEnabled(true);
+            }
         }
+
 
         @Override
         protected void onDraw(Canvas canvas) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
+         try{
+             BitmapFactory.Options options = new BitmapFactory.Options();
+
             options.inSampleSize = 4;
 
             Display display = getWindowManager().getDefaultDisplay();
@@ -351,11 +364,17 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
             } catch (Exception e) {
                 Log.e("Error--------->", e.toString());
             }
+         }catch(Exception e){
+
+         }
         }
 
 
         public int calcYoff(String str, int x, int y, Paint paint, Canvas canvas, int fontSize, int width){
-            int      lineHeight = 0;
+
+          try{
+              int      lineHeight = 0;
+
             int      yoffset    = 0;
             String[] lines      = str.split(" ");
 
@@ -375,16 +394,24 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
                 }
             }
             yOffsetFinal=yoffset+lineHeight+lineHeight;
+          }catch(Exception e){
+
+          }
             return yOffsetFinal;
         }
     }
 
-    private int dpToPx(int dp)
-    {
-        float density = getApplicationContext().getResources().getDisplayMetrics().density;
-        return Math.round((float)dp * density);
-    }
+    private int dpToPx(int dp) {
+        float density=0.0f;
+        try {
+            density = getApplicationContext().getResources().getDisplayMetrics().density;
 
+        } catch (Exception e) {
+
+        }
+        return Math.round((float) dp * density);
+
+    }
 
 //    private boolean isNoteFormOk() {
 //        return !Strings.isNullOrBlank(noteTitleText.getText().toString()) && !Strings.isNullOrBlank(noteContentText.getText().toString());
@@ -395,46 +422,60 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
         int      lineHeight = 0;
         int      yoffset    = 0;
         String[] lines      = str.split(" ");
+try {
+    // set height of each line (height of text + 20%)
+    lineHeight = (int) (calculateHeightFromFontSize(str, fontSize) * 1.2);
+    // draw each line
+    String line = "";
+    for (int i = 0; i < lines.length; ++i) {
 
-        // set height of each line (height of text + 20%)
-        lineHeight = (int) (calculateHeightFromFontSize(str, fontSize) * 1.2);
-        // draw each line
-        String line = "";
-        for (int i = 0; i < lines.length; ++i) {
+        if (calculateWidthFromFontSize(line + " " + lines[i], fontSize) <= drawSpace.width()) {
+            line = line + " " + lines[i];
 
-            if(calculateWidthFromFontSize(line + " " + lines[i], fontSize) <= drawSpace.width()){
-                line = line + " " + lines[i];
-
-            }else{
-                canvas.drawText(line, x, y + yoffset, paint);
-                yoffset = yoffset + lineHeight;
-                line = lines[i];
-            }
+        } else {
+            canvas.drawText(line, x, y + yoffset, paint);
+            yoffset = yoffset + lineHeight;
+            line = lines[i];
         }
-        canvas.drawText(line, x, y + yoffset, paint);
+    }
+    canvas.drawText(line, x, y + yoffset, paint);
+}catch(Exception e){
+
+}
 
     }
 
 
 
-    private int calculateWidthFromFontSize(String testString, int currentSize)
-    {
+    private int calculateWidthFromFontSize(String testString, int currentSize) {
         Rect bounds = new Rect();
-        Paint paint = new Paint();
-        paint.setTextSize(currentSize);
-        paint.getTextBounds(testString, 0, testString.length(), bounds);
+        try {
 
-        return (int) Math.ceil( bounds.width());
+            Paint paint = new Paint();
+            paint.setTextSize(currentSize);
+            paint.getTextBounds(testString, 0, testString.length(), bounds);
+
+            return (int) Math.ceil(bounds.width());
+        }catch(Exception e){
+
+        }
+        return (int) Math.ceil(bounds.width());
     }
 
-    private int calculateHeightFromFontSize(String testString, int currentSize)
-    {
+    private int calculateHeightFromFontSize(String testString, int currentSize) {
         Rect bounds = new Rect();
-        Paint paint = new Paint();
-        paint.setTextSize(currentSize);
-        paint.getTextBounds(testString, 0, testString.length(), bounds);
+        try {
 
-        return (int) Math.ceil( bounds.height());
+
+            Paint paint = new Paint();
+            paint.setTextSize(currentSize);
+            paint.getTextBounds(testString, 0, testString.length(), bounds);
+
+        } catch (Exception e) {
+
+        }
+        return (int) Math.ceil(bounds.height());
+
     }
 
 

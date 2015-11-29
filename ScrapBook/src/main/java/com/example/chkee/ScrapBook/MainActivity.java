@@ -15,17 +15,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs!=null && prefs.getString("accessToken",null)!=null)
-            startActivity(new Intent(this,HomeActivity.class));
-        else
-        startActivity(new Intent(this, Login.class));
+        try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (prefs != null && prefs.getString("accessToken", null) != null)
+                startActivity(new Intent(this, HomeActivity.class));
+            else
+                startActivity(new Intent(this, Login.class));
+        }catch(Exception e){
+
+        }
     }
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
-        if (keycode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
+        try {
+            if (keycode == KeyEvent.KEYCODE_BACK) {
+                moveTaskToBack(true);
+            }
+        }catch(Exception e){
+
         }
+
         return super.onKeyDown(keycode, event);
     }
 }
