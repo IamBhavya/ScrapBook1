@@ -44,30 +44,30 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if(getSupportFragmentManager().findFragmentById(R.id.fragment) != null) {
-            getSupportFragmentManager().beginTransaction().
-                    remove(getSupportFragmentManager().findFragmentById(R.id.fragment)).commit();}
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.fragment)).commit();
+            }
+
             setContentView(R.layout.content_login_land);
-            etUserName = (EditText) findViewById(R.id.etUserName);
-            etPassword = (EditText) findViewById(R.id.etPassword);
-            registerLink = (TextView) findViewById(R.id.tvRegisterLink);
-            login = (Button) findViewById(R.id.bLogin);
-            login.setOnClickListener(this);
-            registerLink.setOnClickListener(this);
-            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             if(getSupportFragmentManager().findFragmentById(R.id.fragment1) != null) {
                 getSupportFragmentManager().beginTransaction().
                         remove(getSupportFragmentManager().findFragmentById(R.id.fragment1)).commit();
             }
-            etUserName = (EditText) findViewById(R.id.etUserName);
-            etPassword = (EditText) findViewById(R.id.etPassword);
-            registerLink = (TextView) findViewById(R.id.tvRegisterLink);
-            login = (Button) findViewById(R.id.bLogin);
+
             setContentView(R.layout.content_login);
-            login.setOnClickListener(this);
-            registerLink.setOnClickListener(this);
         }
+        etUserName = (EditText) findViewById(R.id.etUserName);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        registerLink = (TextView) findViewById(R.id.tvRegisterLink);
+        login = (Button) findViewById(R.id.bLogin);
+        login.setOnClickListener(this);
+        registerLink.setOnClickListener(this);
+
     }
 
     @Override

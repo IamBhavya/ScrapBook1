@@ -35,12 +35,7 @@ public class NewLogin extends AppCompatActivity {
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 if (prefs != null && prefs.getString("accessToken", null) != null) {
-                    boolean b = hasActiveInternetConnection(this);
-                    if (b == false) {
-                        Toast.makeText(this, "Internet Not Available", Toast.LENGTH_SHORT).show();
-                    } else {
                         startActivity(new Intent(this, NewActivity.class));
-                    }
             }
         } catch (Exception e) {
 

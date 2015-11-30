@@ -87,11 +87,6 @@ public class NewMain extends Fragment {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        boolean b = hasActiveInternetConnection(getContext());
-        if (b == false) {
-            Toast.makeText(getContext(), "Internet Not Available", Toast.LENGTH_SHORT).show();
-        }
-        else {
             try {
                 FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
                 mCallbackManager = CallbackManager.Factory.create();
@@ -102,8 +97,8 @@ public class NewMain extends Fragment {
             } catch (Exception e) {
 
             }
-        }
-}
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

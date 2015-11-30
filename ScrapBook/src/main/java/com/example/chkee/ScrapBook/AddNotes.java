@@ -232,7 +232,8 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
 
     }
 
-    public class Draw2d extends View {
+
+        public class Draw2d extends View {
 
         private Drawable mDrawable;
         //private Drawable mD2;
