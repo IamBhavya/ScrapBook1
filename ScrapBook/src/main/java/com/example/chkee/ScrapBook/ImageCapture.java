@@ -164,6 +164,7 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
 
                         else{
                             Toast.makeText(this,"Please Use GPS/Internet Service",Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     } else {
                         addresses = gcd.getFromLocation(gps[0], gps[1], 1);
@@ -196,7 +197,6 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
                 }catch(Exception e){
 
                 }
-
             }
             else if(shre.getString("last known",null)!=null){
                 String s= shre.getString("last known",null);
@@ -205,7 +205,7 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
                 Toast toast = Toast.makeText(this, s, Toast.LENGTH_SHORT);
                 toast.show();
 
-                File direct = new File(Environment.getExternalStorageDirectory() + s);
+                File direct = new File(Environment.getExternalStorageDirectory() + s + "-no providers");
 
                 if (!direct.exists()) {
                     File wallpaperDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/ScrapBook/" + s);
