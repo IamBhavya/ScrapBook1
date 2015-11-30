@@ -32,7 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A placeholder fragment containing a simple view.
+ * A placeholder fragment containing a simple view
+ * Facebook Login Fragment
  */
 public class MainFragment extends Fragment {
     private CallbackManager mCallbackManager;
@@ -190,5 +191,6 @@ try {
         }
         return false;
     }
+
 
 }

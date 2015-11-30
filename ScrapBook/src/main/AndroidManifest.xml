@@ -40,6 +40,7 @@
         </activity>
         <activity
             android:name=".Login"
+            android:configChanges="keyboardHidden|screenSize|orientation"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
@@ -66,6 +67,7 @@
 
         <activity
             android:name=".HomeActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
@@ -84,11 +86,13 @@
 
         <activity
             android:name=".DateActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
             android:label="@string/title_activity_date"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".NewActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
             android:label="@string/title_activity_new"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>

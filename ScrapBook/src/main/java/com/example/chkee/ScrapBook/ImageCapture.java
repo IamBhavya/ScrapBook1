@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -47,6 +48,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+//Click Snap Shot , this class allows the user to take pictures and save it in the corresponding folder named by the city name
 public class ImageCapture extends Activity implements NotesFragment.OnFragmentInteractionListener, ImageViewFragment.OnFragmentInteractionListener, SurfaceHolder.Callback, Camera.ShutterCallback, Camera.PictureCallback, BaseFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     Camera mCamera;
@@ -471,6 +473,11 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
 
 
 
@@ -557,8 +564,10 @@ public class ImageCapture extends Activity implements NotesFragment.OnFragmentIn
             Camera.Size selected = sizes.get(0);
             params.setPreviewSize(selected.width, selected.height);
             mCamera.setParameters(params);
-
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
             mCamera.setDisplayOrientation(90);
+            else
+            mCamera.setDisplayOrientation(0);
             mCamera.startPreview();
         }catch(Exception e){
 

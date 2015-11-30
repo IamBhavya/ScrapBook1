@@ -3,6 +3,7 @@ package com.example.chkee.ScrapBook;
 /**
  * Created by chkee on 11/3/2015.
  */
+//This is class to store the user information
 public class Contact {
     int id;
     String name;

@@ -3,6 +3,7 @@ package com.example.chkee.ScrapBook;
 /**
  * Created by chkee on 11/6/2015.
  */
+//Description of Photo
 public class Photo {
     int id;
     String image_id;

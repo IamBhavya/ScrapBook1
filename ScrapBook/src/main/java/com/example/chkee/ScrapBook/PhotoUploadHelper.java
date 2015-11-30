@@ -30,7 +30,7 @@ public class PhotoUploadHelper extends SQLiteOpenHelper {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
 
-    public void insertPhotoInfo(Photo c)
+    public boolean insertPhotoInfo(Photo c)
     {
         db= this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -41,6 +41,7 @@ public class PhotoUploadHelper extends SQLiteOpenHelper {
         values.put(COLUMN_IMAGE_ID,c.getImage_id());
         values.put(COLUMN__BOOLEAN,c.getValue());
         db.insert(TABLE_NAME, null, values);
+        return true;
     }
     public String getPhotoInfo(String image_id)
     {

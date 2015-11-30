@@ -2,12 +2,18 @@ package com.example.chkee.ScrapBook;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
+
+// First Activity in the Application
+//We Check if the user is already logged in facebook
+//If yes,we directly go to Home Screen , else login activity
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +31,15 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+    }
     public boolean onKeyDown(int keycode, KeyEvent event) {
         try {
             if (keycode == KeyEvent.KEYCODE_BACK) {
@@ -34,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception e){
 
         }
-
         return super.onKeyDown(keycode, event);
     }
 }

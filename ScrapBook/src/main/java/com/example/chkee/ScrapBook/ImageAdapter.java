@@ -16,6 +16,7 @@ import java.io.File;
 /**
  * Created by chkee on 11/19/2015.
  */
+//While uploading to set the grid view of pictures in the gallery
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     BitmapDrawable mDrawable[];

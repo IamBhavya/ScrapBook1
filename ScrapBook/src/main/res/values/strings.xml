@@ -23,6 +23,10 @@
     <string name="title_activity_date">DateActivity</string>
     <string name="title_activity_new">NewActivity</string>
     <string name="title_activity_new_login">NewLogin</string>
+    <string name="ClickImage">Click Image</string>
+    <string name="ScrapBookGallery">Scrapbook Gallery</string>
+    <string name="ScheduleTimer">Schedule Timer</string>
+    <string name="Logout">Logout</string>
 
 
 </resources>

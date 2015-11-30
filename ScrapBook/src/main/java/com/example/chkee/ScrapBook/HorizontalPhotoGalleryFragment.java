@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Field;
 
+// ScrapBook Gallery, Slide show view of the pictures in the gallery provided by this.
 
 public class HorizontalPhotoGalleryFragment extends SimplePhotoGalleryListFragment {
 

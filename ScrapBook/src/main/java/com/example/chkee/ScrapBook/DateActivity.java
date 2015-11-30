@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -21,13 +23,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 
+//Activity class which sets alarm task for the notification.
+
 public class DateActivity extends AppCompatActivity {
     DatePicker timerButton;
     private ScheduleClient scheduleClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_date);
+        else
+        setContentView(R.layout.content_date_new);
 
         try{
 
@@ -64,6 +71,85 @@ public class DateActivity extends AppCompatActivity {
 
       }
     }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setContentView(R.layout.content_date_new);
+            try{
+
+                scheduleClient = new ScheduleClient(this);
+
+                scheduleClient.doBindService();
+                Calendar c = Calendar.getInstance();
+                timerButton = (DatePicker) findViewById(R.id.date_picker);
+                timerButton.init(
+                        c.get(Calendar.YEAR),
+                        c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH),
+                        new DatePicker.OnDateChangedListener() {
+
+                            @Override
+                            public void onDateChanged(DatePicker view,
+                                                      int year, int monthOfYear, int dayOfMonth) {
+
+                                Calendar c = Calendar.getInstance();
+                                //  c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                                //c.set(Calendar.YEAR,year);
+                                //c.set(Calendar.MONTH,monthOfYear);
+                                //c.set(Calendar.HOUR_OF_DAY,12);
+                                //c.set(Calendar.MINUTE, 0);
+                                //c.set(Calendar.SECOND,0);
+                                // scheduleClient.setAlarmForNotification(c);
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                scheduleClient.setAlarmForNotification(c);
+                                Toast.makeText(getApplicationContext(), "Notification set for: " + (monthOfYear + 1) + "/" + dayOfMonth + "/" + year, Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+            }catch(Exception e){
+
+            }
+
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            setContentView(R.layout.content_date);
+            try{
+
+                scheduleClient = new ScheduleClient(this);
+                scheduleClient.doBindService();
+                Calendar c = Calendar.getInstance();
+                timerButton = (DatePicker) findViewById(R.id.date_picker);
+                timerButton.init(
+                        c.get(Calendar.YEAR),
+                        c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH),
+                        new DatePicker.OnDateChangedListener() {
+
+                            @Override
+                            public void onDateChanged(DatePicker view,
+                                                      int year, int monthOfYear, int dayOfMonth) {
+
+                                Calendar c = Calendar.getInstance();
+                                //  c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                                //c.set(Calendar.YEAR,year);
+                                //c.set(Calendar.MONTH,monthOfYear);
+                                //c.set(Calendar.HOUR_OF_DAY,12);
+                                //c.set(Calendar.MINUTE, 0);
+                                //c.set(Calendar.SECOND,0);
+                                // scheduleClient.setAlarmForNotification(c);
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                scheduleClient.setAlarmForNotification(c);
+                                Toast.makeText(getApplicationContext(), "Notification set for: " + (monthOfYear + 1) + "/" + dayOfMonth + "/" + year, Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+            }catch(Exception e){
+
+            }
+        }
+
+    }
 
     public boolean hasActiveInternetConnection(Context context) {
         if (isNetworkAvailable()) {
@@ -95,7 +181,7 @@ public class DateActivity extends AppCompatActivity {
         try {
             startActivity(new Intent(this, HomeActivity.class));
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
     }

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by chkee on 11/3/2015.
  */
+// Data Base Helper class , to store the user name , name and password of the user
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION =1;
@@ -28,7 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
 
-    public void insertContact(Contact c)
+    public boolean insertContact(Contact c)
     {
         db= this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -40,6 +41,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USERNAME,c.getUserName());
         values.put(COLUMN_PASSWORD,c.getPassword());
         db.insert(TABLE_NAME, null, values);
+        return true;
     }
     public String searchPassword(String userName)
     {

@@ -1,6 +1,7 @@
 package com.example.chkee.ScrapBook;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.Calendar;
+
+//user will be able to regisgter from this class and details will be saved in database
 
 public class Register extends ActionBarActivity implements View.OnClickListener {
 
@@ -32,6 +35,16 @@ public class Register extends ActionBarActivity implements View.OnClickListener 
 
         }
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //  Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            //  Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

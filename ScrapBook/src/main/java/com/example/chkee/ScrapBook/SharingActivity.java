@@ -3,6 +3,7 @@ package com.example.chkee.ScrapBook;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -57,6 +58,8 @@ import java.util.Map;
 
 import static com.facebook.login.LoginManager.*;
 
+//Uploads pictures to Facebook, and uploads only those which werent uploaded before
+
 public class SharingActivity extends AppCompatActivity {
 
     PhotoUploadHelper helper=new PhotoUploadHelper(this);
@@ -67,16 +70,17 @@ public class SharingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_sharing_actvity);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sharing_actvity);
         try {
-
-                Bundle extras = getIntent().getExtras();
-                arr = extras.getIntArray("FilesToUpload");
-                    uploadActivity();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            Bundle extras = getIntent().getExtras();
+            arr = extras.getIntArray("FilesToUpload");
+            try {
+                uploadActivity();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         catch (Exception e){
 
         }

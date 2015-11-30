@@ -3,6 +3,7 @@ package com.example.chkee.ScrapBook;
 /**
  * Created by chkee on 10/18/2015.
  */
+//User data to be stored in database
 public class user {
     String name,userName,password;
     //Time in hours

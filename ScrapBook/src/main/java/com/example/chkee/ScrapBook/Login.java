@@ -1,6 +1,9 @@
 package com.example.chkee.ScrapBook;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
@@ -10,20 +13,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+//In this class , we have login check , which checks user is registered , if yes if the credentials are valid
+//Register link, which takes the user to registration page.
 public class Login extends ActionBarActivity implements View.OnClickListener{
     Button login;
     EditText etPassword,etUserName;
     TextView registerLink;
     DataBaseHelper helper = new DataBaseHelper(this);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_login);
+        else
+        setContentView(R.layout.content_login_land);
     try {
             etUserName = (EditText) findViewById(R.id.etUserName);
-
             etPassword = (EditText) findViewById(R.id.etPassword);
             registerLink = (TextView) findViewById(R.id.tvRegisterLink);
             login = (Button) findViewById(R.id.bLogin);
@@ -31,6 +38,35 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
             registerLink.setOnClickListener(this);
         }catch(Exception e){
 
+        }
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if(getSupportFragmentManager().findFragmentById(R.id.fragment) != null) {
+            getSupportFragmentManager().beginTransaction().
+                    remove(getSupportFragmentManager().findFragmentById(R.id.fragment)).commit();}
+            setContentView(R.layout.content_login_land);
+            etUserName = (EditText) findViewById(R.id.etUserName);
+            etPassword = (EditText) findViewById(R.id.etPassword);
+            registerLink = (TextView) findViewById(R.id.tvRegisterLink);
+            login = (Button) findViewById(R.id.bLogin);
+            login.setOnClickListener(this);
+            registerLink.setOnClickListener(this);
+            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            if(getSupportFragmentManager().findFragmentById(R.id.fragment1) != null) {
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.fragment1)).commit();
+            }
+            etUserName = (EditText) findViewById(R.id.etUserName);
+            etPassword = (EditText) findViewById(R.id.etPassword);
+            registerLink = (TextView) findViewById(R.id.tvRegisterLink);
+            login = (Button) findViewById(R.id.bLogin);
+            setContentView(R.layout.content_login);
+            login.setOnClickListener(this);
+            registerLink.setOnClickListener(this);
         }
     }
 
@@ -72,7 +108,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
 
         } catch (Exception e) {
-
         }
         return super.onKeyDown(keycode, event);
     }

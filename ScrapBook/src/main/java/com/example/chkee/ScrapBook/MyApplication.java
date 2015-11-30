@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by chkee on 10/17/2015.
  */
+//To calculate hash of the device . Contains KeyHash
 public class MyApplication extends Application {
     public void onCreate()
     {

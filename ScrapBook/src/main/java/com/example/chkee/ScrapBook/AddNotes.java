@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,7 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import android.support.v4.view.MenuItemCompat;
 
-
+//This class helps in users to add noes to the pictures
 
 
 public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragmentInteractionListener, ImageViewFragment.OnFragmentInteractionListener, NotesFragment.OnFragmentInteractionListener{
@@ -63,7 +64,6 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
         try {
             fm1 = this.getFragmentManager();
             targetFragment1 = null;
-
             targetFragment1 = HorizontalPhotoGalleryFragment.newInstance(1);
 
             FragmentTransaction ft = fm1.beginTransaction();
@@ -74,6 +74,10 @@ public class AddNotes extends AppCompatActivity implements BaseFragment.OnFragme
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
     public void inflatePicture(String imagePath) throws FileNotFoundException {
         try {
             imagePathFull = imagePath;

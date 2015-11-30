@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+//If the user is not logged in with facebook before, should be logged in from here before the upload
+
 public class NewLogin extends AppCompatActivity {
 
     @Override
@@ -31,9 +34,7 @@ public class NewLogin extends AppCompatActivity {
         try {
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
                 if (prefs != null && prefs.getString("accessToken", null) != null) {
-
                     boolean b = hasActiveInternetConnection(this);
                     if (b == false) {
                         Toast.makeText(this, "Internet Not Available", Toast.LENGTH_SHORT).show();
@@ -109,4 +110,9 @@ public class NewLogin extends AppCompatActivity {
         }
         return false;
     }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
 }

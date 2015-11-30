@@ -1,6 +1,7 @@
 package com.example.chkee.ScrapBook;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.chkee.ScrapBook.R;
+//Upload class . which gives the grid view and helps the user to select pictures for the upload
 
 public class NewActivity extends AppCompatActivity {
 
@@ -53,4 +55,10 @@ public class NewActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
 }

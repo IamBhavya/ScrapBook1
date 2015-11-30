@@ -19,7 +19,6 @@ import android.util.Log;
  * We pop a notification into the status bar for the user to click on
  * When the user clicks the notification a new activity is opened
  *
- * @author paul.blundell
  */
 public class NotifyService extends Service {
 

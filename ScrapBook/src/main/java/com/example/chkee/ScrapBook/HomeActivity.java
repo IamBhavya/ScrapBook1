@@ -2,6 +2,7 @@ package com.example.chkee.ScrapBook;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -25,7 +26,7 @@ import java.util.TimeZone;
 import java.util.Calendar;
 import java.util.Timer;
 
-
+//From here , user can click image, edit pictures,
 public class HomeActivity extends ActionBarActivity implements View.OnClickListener {
     Button cameraButton,logoutButton,galleryButton;
     Button timerButton;
@@ -34,7 +35,10 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_home);
+        else
+        setContentView(R.layout.content_new_home);
         try {
             cameraButton = (Button) findViewById(R.id.image_button);
             galleryButton = (Button) findViewById(R.id.gallery_button);
@@ -49,6 +53,36 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         }
     }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setContentView(R.layout.content_new_home);
+            cameraButton = (Button) findViewById(R.id.image_button);
+            galleryButton = (Button) findViewById(R.id.gallery_button);
+            logoutButton = (Button) findViewById(R.id.logout_button);
+            timerButton = (Button) findViewById(R.id.schedule_timer);
+            timerButton.setOnClickListener(this);
+            cameraButton.setOnClickListener(this);
+            galleryButton.setOnClickListener(this);
+            logoutButton.setOnClickListener(this);
+
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            setContentView(R.layout.content_home);
+            cameraButton = (Button) findViewById(R.id.image_button);
+            galleryButton = (Button) findViewById(R.id.gallery_button);
+            logoutButton = (Button) findViewById(R.id.logout_button);
+            timerButton = (Button) findViewById(R.id.schedule_timer);
+            timerButton.setOnClickListener(this);
+            cameraButton.setOnClickListener(this);
+            galleryButton.setOnClickListener(this);
+            logoutButton.setOnClickListener(this);
+        }
+
+    }
+
     @Override
     public void onClick(View v) {
 

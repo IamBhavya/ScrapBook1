@@ -33,6 +33,7 @@ import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
+ * Facebook Login Fragment , for users who login just before the upload
  */
 public class NewMain extends Fragment {
     private CallbackManager mCallbackManager;
@@ -86,15 +87,22 @@ public class NewMain extends Fragment {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-try{
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
-        //    List<String> permissionNeeds = Arrays.asList("publish_actions");
-        manager = LoginManager.getInstance();
-        manager.registerCallback(mCallbackManager,mCallback);
-}catch(Exception e){
+        boolean b = hasActiveInternetConnection(getContext());
+        if (b == false) {
+            Toast.makeText(getContext(), "Internet Not Available", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            try {
+                FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+                mCallbackManager = CallbackManager.Factory.create();
+                //    List<String> permissionNeeds = Arrays.asList("publish_actions");
+                manager = LoginManager.getInstance();
+                manager.registerCallback(mCallbackManager, mCallback);
 
-}
+            } catch (Exception e) {
+
+            }
+        }
 }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,8 +111,7 @@ try{
 
     }
     @Override
-    public void onViewCreated(View view,Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
  try{
         LoginButton loginButton=(LoginButton) view.findViewById(R.id.new_login_button);
