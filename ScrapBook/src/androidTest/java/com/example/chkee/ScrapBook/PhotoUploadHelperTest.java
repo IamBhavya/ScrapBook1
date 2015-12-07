@@ -5,6 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 /**
  * Created by chkee on 11/30/2015.
  */
+//Testing the PhotoUploadHelper functions
 public class PhotoUploadHelperTest extends ActivityInstrumentationTestCase2<SharingActivity>
 {
     public PhotoUploadHelperTest() {

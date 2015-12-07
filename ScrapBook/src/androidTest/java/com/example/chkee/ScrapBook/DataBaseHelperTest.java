@@ -5,6 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 /**
  * Created by chkee on 11/29/2015.
  */
+//Testing the functions in Database helper
 public class DataBaseHelperTest extends ActivityInstrumentationTestCase2<Register> {
     public DataBaseHelperTest() {
         super(Register.class);

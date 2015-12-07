@@ -7,6 +7,7 @@ import android.widget.Button;
 /**
  * Created by chkee on 11/29/2015.
  */
+//Testing the Logout Button
 public class ButtonTestLogout extends ActivityInstrumentationTestCase2<HomeActivity> {
     public ButtonTestLogout() {
         super(HomeActivity.class);

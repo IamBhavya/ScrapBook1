@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import java.util.Calendar;
 
-//user will be able to regisgter from this class and details will be saved in database
+//user will be able to register from this class and details will be saved in database
 
 public class Register extends ActionBarActivity implements View.OnClickListener {
 

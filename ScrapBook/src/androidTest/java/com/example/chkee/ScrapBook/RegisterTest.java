@@ -9,6 +9,7 @@ import android.widget.EditText;
 /**
  * Created by chkee on 11/23/2015.
  */
+//Testing the Register Class Functionality
 public class RegisterTest extends ActivityInstrumentationTestCase2<Register> {
 
     private Register mRegisterTestActivity;

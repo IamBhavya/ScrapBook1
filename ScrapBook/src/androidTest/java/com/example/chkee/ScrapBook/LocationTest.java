@@ -17,6 +17,7 @@ import java.util.Locale;
 /**
  * Created by chkee on 11/30/2015.
  */
+//Testing if the current location is "columbus"
 public class LocationTest extends ActivityInstrumentationTestCase2<ImageCapture> {
     public LocationTest() {
         super(ImageCapture.class);
@@ -67,7 +68,9 @@ public class LocationTest extends ActivityInstrumentationTestCase2<ImageCapture>
             addresses = gcd.getFromLocation(gps[0], gps[1], 1);
              s = addresses.get(0).getLocality();
         }
-        assertEquals(s,"Columbus");
+        if(s!=null)
+        assertEquals(s,"NewYork");
+        else assertEquals(s,null);
     }
 }
 

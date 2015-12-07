@@ -43,9 +43,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        View v=getCurrentFocus();
+        String s=  etUserName.getText().toString();
+        String s1= etPassword.getText().toString();
+       if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if(getSupportFragmentManager().findFragmentById(R.id.fragment) != null) {
                 getSupportFragmentManager().beginTransaction().
                         remove(getSupportFragmentManager().findFragmentById(R.id.fragment)).commit();
@@ -61,8 +62,12 @@ public class Login extends ActionBarActivity implements View.OnClickListener{
 
             setContentView(R.layout.content_login);
         }
+  
+
         etUserName = (EditText) findViewById(R.id.etUserName);
         etPassword = (EditText) findViewById(R.id.etPassword);
+        etUserName.setText(s);
+        etPassword.setText(s1);
         registerLink = (TextView) findViewById(R.id.tvRegisterLink);
         login = (Button) findViewById(R.id.bLogin);
         login.setOnClickListener(this);
